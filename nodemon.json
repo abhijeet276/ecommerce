@@ -1,0 +1,6 @@
+{
+  "watch": ["backend"],
+  "ext": ".ts,.js",
+  "ignore": [],
+  "exec": "node --inspect -r ts-node/register ./backend/server.ts"
+}
