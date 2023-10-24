@@ -1,30 +1,23 @@
-import { NextFunction, Request, Response } from "express";
+import httpStatus from "http-status";
 
-export class CustomErrorHandler {
-    static handle(error:any, req:Request, res:Response, next:NextFunction) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode || 500).json({ error: error.message });
-      } else if (error.name === 'ValidationError') {
-        const validationErrors = [];
-        for (const key in error.errors) {
-          validationErrors.push(error.errors[key].message);
-        }
-        res.status(400).json({ errors: validationErrors });
-      } else {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
-    }
+export class CustomErrorHandler extends Error {
+  public readonly log: string;
+  public readonly methodName: string;
+  public readonly httpCode: number;
+  public readonly isOperational: boolean;
+  constructor(
+    httpCode: number = httpStatus.INTERNAL_SERVER_ERROR,
+    log: string,
+    message: string | unknown = log,
+    methodName?: string,
+    isOperational = true
+  ) {
+    super(<string>message);
+    Object.setPrototypeOf(this, new.target.prototype);
+    this.log = log;
+    if (methodName) this.methodName = methodName;
+    this.httpCode = httpCode;
+    this.isOperational = isOperational;
+    Error.captureStackTrace(this);
   }
-  
- export class CustomError extends Error {
-    statusCode:number
-    constructor(message:string, statusCode = 500) {
-      super(message);
-      this.name = 'CustomError';
-      this.statusCode = statusCode;
-    }
-  }
-  
-  module.exports = { CustomErrorHandler, CustomError };
-  
+}

@@ -1,27 +1,27 @@
 import { Request, Response } from "express";
-import Product from "../models/products";
 import { ProductService } from "../services/productService";
 import httpStatus from "http-status";
+import { tryCatch } from "../utils/tryCatch";
 export class ProductController {
   //admin
-  static createProduct = async (req: Request, res: Response) => {
-    const {data,message,status} = await ProductService.createProductService(req, res)
-    res.status(status).send({data,message})
-  }
-  static updateProduct = async (req: Request, res: Response) => {
+  static createProduct = tryCatch(async (req: Request, res: Response) => {
+    const data = await ProductService.createProductService(req, res)
+    res.send(data)
+  })
+  static updateProduct = tryCatch(async (req: Request, res: Response) => {
     const data = await ProductService.updateProductService(req)
-    res.status(httpStatus.OK).send({data})
-  }
-  static getAllProducts = async (req: Request, res: Response) => {
+    res.status(httpStatus.OK).send(data)
+  })
+  static getAllProducts = tryCatch(async (req: Request, res: Response) => {
     const data = await ProductService.getAllProductsService()
-    res.status(httpStatus.OK).send({data})
-  }
-  static deleteProduct = async (req: Request, res: Response) => {
-    const data = await ProductService.deleteProductService(req)
-    res.status(httpStatus.OK).send({data})
-  }
-  static getProductById = async (req: Request, res: Response) => {
+    res.status(httpStatus.OK).send(data)
+  })
+  static deleteProduct = tryCatch(async (req: Request, res: Response) => {
+    await ProductService.deleteProductService(req)
+    res.status(httpStatus.NO_CONTENT).send();
+  })
+  static getProductById = tryCatch(async (req: Request, res: Response) => {
     const data = await ProductService.getProductByIdService(req)
-    res.status(httpStatus.OK).send({data})
-  }
+    res.status(httpStatus.OK).send(data)
+  })
 }

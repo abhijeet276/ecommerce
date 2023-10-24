@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import app from "./app";
 import db from "./db";
 import { NextFunction, Request, Response } from "express";
-import { CustomErrorHandler } from "./utils/errorHandler";
+import { errorHandler } from "./middleware/error";
 dotenv.config({path:"backend/config/config.env"})
 
 const port = process.env.PORT || 5000;
@@ -12,10 +12,8 @@ app.use("*", (req, res) => {
         message: "API endpoint doesnt exist",
     });
 });
-app.use((err, req, res, next) => {
-  CustomErrorHandler.handle(err, req, res, next);
-});
-
+// Error Handling middleware
+app.use(errorHandler);
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof SyntaxError) {
       return res.status(400).json({ error: 'Invalid JSON' });
@@ -25,7 +23,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 //connection to database 
 db()
-
 
 app.listen(port ,()=>{
     console.log(`Server started on ${port}`);
