@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
-import Product from "../models/products";
+import { Product } from "../models/products";
 import httpStatus from "http-status";
 import { CustomErrorHandler } from "../utils/errorHandler";
+import { ApiFeatures } from "../utils/apiFeatures";
+import { ProductDocument } from "../interface/IProductSchema";
+import { FilterSearchOptions, PaginationOptions } from "../interface/IPagination";
 
 export class ProductService {
     static createProductService = async (req: Request, res: Response) => {
@@ -18,8 +21,18 @@ export class ProductService {
         return product
     }
     static getAllProductsService = async () => {
-        const product = await Product.find();
-        return product
+        const filterSearchPagination = new ApiFeatures<ProductDocument>(Product);
+        const filterSearchOptions: FilterSearchOptions = {
+            filters: {},
+            searchKeys: ['fieldName'],
+        };
+        const paginationOptions: PaginationOptions = {
+            page: 1,
+            limit: 10,
+        };
+        const result = await filterSearchPagination.filterSearchPaginate(filterSearchOptions, paginationOptions)
+        // const product = await Product.find();
+        return result
     }
 
     static deleteProductService = async (req: Request) => {

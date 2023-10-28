@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Model, model } from "mongoose";
+import { ProductDocument } from "../interface/IProductSchema";
 
-const productSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema<ProductDocument>({
     name: { type: String, required: [true, "Please enter product name"], trim: true },
     description: { type: String, required: [true, "please Enter Description"] },
     price: { type: Number, required: [true, 'Price is Required'] },
@@ -25,7 +26,7 @@ const productSchema = new mongoose.Schema({
     ],
     stock: {
         type: Number,
-        default:0,
+        default: 0,
         required: [true, 'Stock field cannot be empty'],
         maxLength: [4, "Stock cannot exceed 4 Characters"]
     },
@@ -33,7 +34,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    reveiw: [
+    review: [
         {
             name: {
                 type: String,
@@ -49,10 +50,11 @@ const productSchema = new mongoose.Schema({
             }
         }
     ],
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now()
     }
 })
-const Product = mongoose.model("Product", productSchema);
-export default Product 
+// const Product = mongoose.model("Product", productSchema);
+const Product: Model<ProductDocument> = model<ProductDocument>('Product', productSchema);
+export { Product } 

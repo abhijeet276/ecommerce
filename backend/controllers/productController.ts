@@ -3,7 +3,6 @@ import { ProductService } from "../services/productService";
 import httpStatus from "http-status";
 import { tryCatch } from "../utils/tryCatch";
 export class ProductController {
-  //admin
   static createProduct = tryCatch(async (req: Request, res: Response) => {
     const data = await ProductService.createProductService(req, res)
     res.send(data)
