@@ -24,7 +24,7 @@ export class ProductService {
         const filterSearchPagination = new ApiFeatures<ProductDocument>(Product);
         const filterSearchOptions: FilterSearchOptions = {
             filters: {},
-            searchKeys: ['fieldName'],
+            searchKeys: ['category'],
         };
         const paginationOptions: PaginationOptions = {
             page: 1,
