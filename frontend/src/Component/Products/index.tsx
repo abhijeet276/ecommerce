@@ -7,4 +7,6 @@ const Product:React.FC<IProduct> = () => {
   )
 }
 
+
+
 export default Product

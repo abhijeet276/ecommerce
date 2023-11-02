@@ -2,6 +2,8 @@ import React from 'react'
 // import { CgMouse } from "react-icons"
 import './Home.css'
 import Product from '../Products'
+import { productData } from './data'
+
 const Home:React.FC= () => {
   return (
     <>
@@ -16,7 +18,7 @@ const Home:React.FC= () => {
     </div>
     <h2 className='homeHeading'>Featured Products</h2>
     <div className='container ' id ='container'>
-    <Product product={product}/>
+    <Product product={productData}/>
     </div>
     </>
   )
