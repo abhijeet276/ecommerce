@@ -12,7 +12,7 @@ export class ProductController {
     res.status(httpStatus.OK).send(data)
   })
   static getAllProducts = tryCatch(async (req: Request, res: Response) => {
-    const data = await ProductService.getAllProductsService()
+    const data = await ProductService.getAllProductsService(req)
     res.status(httpStatus.OK).send(data)
   })
   static deleteProduct = tryCatch(async (req: Request, res: Response) => {

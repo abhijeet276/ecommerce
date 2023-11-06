@@ -16,11 +16,10 @@ export class ApiFeatures<T extends Document> {
     totalPages: number;
   }> {
     const orQueries = searchKeys.map(key => ({ [key]: new RegExp(filters[key], 'i') }));
-console.log(orQueries)
     const query: FilterQuery<Document> = {
       $or: orQueries,
-      ...filters,
     };
+    console.log(query,orQueries,"orQueries")
     const totalItems = await this.model.countDocuments(query);
     const totalPages = Math.ceil(totalItems / limit);
     const data = await this.model

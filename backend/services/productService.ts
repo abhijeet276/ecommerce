@@ -20,16 +20,22 @@ export class ProductService {
         })
         return product
     }
-    static getAllProductsService = async () => {
+    static getAllProductsService = async (req: Request) => {
         const filterSearchPagination = new ApiFeatures<ProductDocument>(Product);
-        const filterSearchOptions: FilterSearchOptions = {
-            filters: {},
-            searchKeys: ['category'],
-        };
+        const filterCriteria: { [key: string]: any } = {...req.query}; 
+        delete filterCriteria.searchKeys
+        const searchKeys: string[] = (typeof req.query.searchKeys === 'string')
+        ? req.query.searchKeys.split(',')
+        : ['category'];
         const paginationOptions: PaginationOptions = {
-            page: 1,
-            limit: 10,
+          page: Number(req.query.page) || 1,
+          limit: Number(req.query.limit) || 10,
         };
+        console.log(searchKeys,"filterCriteria",req.query,typeof req.query.searchKeys)
+        const filterSearchOptions: FilterSearchOptions = {
+            filters: filterCriteria,
+            searchKeys,
+          };
         const result = await filterSearchPagination.filterSearchPaginate(filterSearchOptions, paginationOptions)
         // const product = await Product.find();
         return result

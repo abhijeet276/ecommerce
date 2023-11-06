@@ -1,7 +1,7 @@
 import React from 'react'
-import { IProduct } from '../../types/Products'
+import { IProducts } from '../../types/Products'
 
-const Product:React.FC<IProduct> = () => {
+const Product:React.FC<IProducts> = ({product}) => {
   return (
     <div>Product</div>
   )
