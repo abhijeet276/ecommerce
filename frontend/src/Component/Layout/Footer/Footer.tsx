@@ -12,7 +12,7 @@ function Footer() {
 <img src={appStore} alt='Appstore'/>
  </div>
  <div className='midFooter'>
-    <h1>ECOMMMERCE.</h1>
+    <h1>ECOMMMERCE</h1>
     <p>High Quality is our first pripority</p>
     <p>Copyrights 2023 &copy;</p>
  </div>

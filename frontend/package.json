@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/react-icons": "^3.0.0",
+    "@types/react-star-rating-component": "^1.4.4",
     "axios": "^1.6.0",
     "overlay-navbar": "^1.2.3",
     "react": "^18.2.0",
