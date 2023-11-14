@@ -1,16 +1,6 @@
 import { Document } from "mongoose";
-
-interface Image {
-    public_id: string;
-    url: string;
-}
-
-interface Review {
-    name: string;
-    rating: number;
-    comment: string;
-}
-
+import { Review } from "./IReview";
+import { Image } from "./IImage";
 export interface ProductDocument extends Document {
     name: string;
     description: string;
