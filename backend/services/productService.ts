@@ -4,7 +4,6 @@ import httpStatus from "http-status";
 import { CustomErrorHandler } from "../utils/errorHandler";
 import { ApiFeatures } from "../utils/apiFeatures";
 import { ProductDocument } from "../interface/IProductSchema";
-import { FilterSearchOptions, PaginationOptions } from "../interface/IPagination";
 
 export class ProductService {
     static createProductService = async (req: Request, res: Response) => {
@@ -21,24 +20,41 @@ export class ProductService {
         return product
     }
     static getAllProductsService = async (req: Request) => {
-        const filterSearchPagination = new ApiFeatures<ProductDocument>(Product);
-        const filterCriteria: { [key: string]: any } = {...req.query}; 
-        delete filterCriteria.searchKeys
-        const searchKeys: string[] = (typeof req.query.searchKeys === 'string')
-        ? req.query.searchKeys.split(',')
-        : ['category'];
-        const paginationOptions: PaginationOptions = {
-          page: Number(req.query.page) || 1,
-          limit: Number(req.query.limit) || 10,
-        };
-        console.log(searchKeys,"filterCriteria",req.query,typeof req.query.searchKeys)
-        const filterSearchOptions: FilterSearchOptions = {
-            filters: filterCriteria,
-            searchKeys,
-          };
-        const result = await filterSearchPagination.filterSearchPaginate(filterSearchOptions, paginationOptions)
-        // const product = await Product.find();
-        return result
+        const { page, limit, sortBy, sortOrder, search, minPrice, maxPrice, ...dynamicFilters } = req.query;
+        const filter: { [key: string]: any } = {};
+        //we are checking if we have the min or max price
+        if (minPrice !== undefined) {
+            filter.price = { ...filter.price, $gte: parseFloat(minPrice as string) };
+        }
+        if (maxPrice !== undefined) {
+            filter.price = { ...filter.price, $lte: parseFloat(maxPrice as string) };
+        }
+        //we are adding other filters like category search
+        Object.entries(dynamicFilters).forEach(([key, value]) => {
+            if (typeof value === 'string')
+                filter[key] = { $regex: new RegExp(value, 'i') };
+            else console.warn(`Skipping this key "${key}" because its not a string.`);
+        });
+        //search
+        if (search) {
+            const searchString: string = search as string;
+            filter.$or = [{ name: new RegExp(searchString, 'i') }, { description: new RegExp(searchString, 'i') }];
+        }
+        //sort
+        const sort: { [key: string]: 'asc' | 'desc' } = {};;
+        if (sortBy) {
+            const sortField: string = sortBy as string;
+            sort[sortField] = sortOrder === 'desc' ? 'desc' : 'asc';
+        }
+        const pagination = new ApiFeatures<ProductDocument>(Product, {
+            page: parseInt(page as string, 10) || 1,
+            limit: parseInt(limit as string, 10) || 10,
+            sort,
+            filter,
+        });
+
+        const results = await pagination.getResults();
+        return results;
     }
 
     static deleteProductService = async (req: Request) => {
