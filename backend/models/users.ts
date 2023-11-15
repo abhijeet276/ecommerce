@@ -1,7 +1,10 @@
 import mongoose, { Model, model } from "mongoose";
 import validator from "validator"
 import { IUserDocument } from "../interface/IUserSchema";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
+import { CustomErrorHandler } from "../utils/errorHandler";
+import httpStatus from "http-status";
 const userSchema = new mongoose.Schema<IUserDocument>({
     name: {
         type: String,
@@ -37,7 +40,6 @@ const userSchema = new mongoose.Schema<IUserDocument>({
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 });
-const Users: Model<IUserDocument> = model<IUserDocument>('Users', userSchema);
 userSchema.pre('save', async function (next) {
     if (this.isModified('password') || this.isNew) {
         try {
@@ -47,4 +49,21 @@ userSchema.pre('save', async function (next) {
     }
     next();
 });
+//Jwt Token
+userSchema.methods.getJwtToken = function(){
+    return jwt.sign({ id: this._id}, process.env.JWT_SECRET ,{ expiresIn : process.env.JWT_EXPIRE });
+}
+
+// Compare Password 
+userSchema.methods.comparePassword = async function(enterdPassword:string){
+    try {
+        const isPasswordMatch = await bcrypt.compare(enterdPassword, this.password);
+        console.log(isPasswordMatch,"invalid email or password")
+        return isPasswordMatch;
+      } catch (error) {
+        console.log("first invalid email or password")
+        throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password");
+      }
+}
+const Users: Model<IUserDocument> = model<IUserDocument>('Users', userSchema);
 export { Users }

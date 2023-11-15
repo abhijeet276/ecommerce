@@ -10,4 +10,6 @@ export interface IUserDocument extends Document {
     createdAt:Date;
     resetPasswordToken: string,
     resetPasswordExpire: Date,
+    getJwtToken(): string;
+    comparePassword(enterdPassword:string):string
 }

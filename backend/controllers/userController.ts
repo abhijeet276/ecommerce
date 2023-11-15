@@ -9,4 +9,8 @@ export class UserController {
         const data = await UserService.createUserService(req, res)
         res.send(data)
       })
+    static loginUser = tryCatch(async (req: Request, res: Response) => {
+        const data = await UserService.loginUserService(req, res)
+        res.send(data)
+      })
 }
