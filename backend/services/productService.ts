@@ -4,9 +4,11 @@ import httpStatus from "http-status";
 import { CustomErrorHandler } from "../utils/errorHandler";
 import { ApiFeatures } from "../utils/apiFeatures";
 import { ProductDocument } from "../interface/IProductSchema";
+import { AuthenticatedRequest } from "../interface/IUserSchema";
 
 export class ProductService {
-    static createProductService = async (req: Request, res: Response) => {
+    static createProductService = async (req: AuthenticatedRequest, res: Response) => {
+        req.body.user = req.user.id
         const product = await Product.create(req.body);
         return product
     }

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ProductService } from "../services/productService";
 import httpStatus from "http-status";
-import { tryCatch } from "../utils/tryCatch";
+import { tryCatch } from "../middleware/tryCatch";
 export class ProductController {
   static createProduct = tryCatch(async (req: Request, res: Response) => {
     const data = await ProductService.createProductService(req, res)

@@ -1,5 +1,6 @@
 import { Document } from "mongoose";
 import { Image } from "./IImage";
+import { Request } from "express";
 
 export interface IUserDocument extends Document {
     name: string;
@@ -12,4 +13,9 @@ export interface IUserDocument extends Document {
     resetPasswordExpire: Date,
     getJwtToken(): string;
     comparePassword(enterdPassword:string):string
+    getResetPasswordToken():string
 }
+
+export interface AuthenticatedRequest extends Request {
+    user?: IUserDocument;
+  }

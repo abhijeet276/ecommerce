@@ -1,7 +1,5 @@
-import { Request, Response } from "express";
-import httpStatus from "http-status";
-import { tryCatch } from "../utils/tryCatch";
-import { Users } from "../models/users";
+import { NextFunction, Request, Response } from "express";
+import { tryCatch } from "../middleware/tryCatch";
 import { UserService } from "../services/userService";
 
 export class UserController {
@@ -11,6 +9,14 @@ export class UserController {
       })
     static loginUser = tryCatch(async (req: Request, res: Response) => {
         const data = await UserService.loginUserService(req, res)
+        res.send(data)
+      })
+    static logout = tryCatch(async (req: Request, res: Response,next:NextFunction) => {
+        const data = await UserService.logoutService(req, res,next)
+        res.send(data)
+      })
+    static forgotPassword = tryCatch(async (req: Request, res: Response,next:NextFunction) => {
+        const data = await UserService.forgotPasswordService(req, res,next)
         res.send(data)
       })
 }

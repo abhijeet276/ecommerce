@@ -2,9 +2,10 @@ import mongoose, { Model, model } from "mongoose";
 import validator from "validator"
 import { IUserDocument } from "../interface/IUserSchema";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import { CustomErrorHandler } from "../utils/errorHandler";
 import httpStatus from "http-status";
+import crypto from "crypto"
 const userSchema = new mongoose.Schema<IUserDocument>({
     name: {
         type: String,
@@ -50,20 +51,33 @@ userSchema.pre('save', async function (next) {
     next();
 });
 //Jwt Token
-userSchema.methods.getJwtToken = function(){
-    return jwt.sign({ id: this._id}, process.env.JWT_SECRET ,{ expiresIn : process.env.JWT_EXPIRE });
+userSchema.methods.getJwtToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
 }
 
 // Compare Password 
-userSchema.methods.comparePassword = async function(enterdPassword:string){
+userSchema.methods.comparePassword = async function (enterdPassword: string) {
     try {
         const isPasswordMatch = await bcrypt.compare(enterdPassword, this.password);
-        console.log(isPasswordMatch,"invalid email or password")
+        console.log(isPasswordMatch, "invalid email or password")
         return isPasswordMatch;
-      } catch (error) {
+    } catch (error) {
         console.log("first invalid email or password")
         throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password");
-      }
+    }
+}
+//reset pswd token generator
+userSchema.methods.getResetPasswordToken = async function () {
+    const resetTokenn = crypto.randomBytes(20).toString("hex")
+    try {
+        this.resetPasswordToken = crypto.createHash("sha256").update(resetTokenn).digest("hex")
+        this.resetPasswordExpire = Date.now() + 15 * 60 * 1000
+        return resetTokenn
+    } catch (error) {
+        console.log(error)
+    }
+    //hasing 
+
 }
 const Users: Model<IUserDocument> = model<IUserDocument>('Users', userSchema);
 export { Users }

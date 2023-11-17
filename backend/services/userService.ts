@@ -1,13 +1,16 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Users } from "../models/users";
 import { CustomErrorHandler } from "../utils/errorHandler";
 import httpStatus from "http-status";
+import { sendToken } from "../utils/jwtToken";
+import { tryCatch } from "../middleware/tryCatch";
+import { sendEmail } from "../utils/sendEmail";
 
 export class UserService {
     static createUserService = async (req: Request, res: Response) => {
         const user = await Users.create(req.body);
-        const token = user.getJwtToken()
-        return { user, token }
+        if (!user) throw new CustomErrorHandler(httpStatus.CREATED, "Failed to create a user");
+        return sendToken(user, 201, res);
     }
     static loginUserService = async (req: Request, res: Response) => {
         const { email, password } = req.body;
@@ -16,13 +19,50 @@ export class UserService {
 
         const user = await Users.findOne({ email }).select("+password")
         if (!user)
-            throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password ")
-        const isPasswordCorrect = user.comparePassword(password)
-        console.log(isPasswordCorrect, "pswd compare", email, password, user)
-        if (!isPasswordCorrect)
-            throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password ")
+            throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password ");
+        // compare the hashed password with the provided one
 
-        const token = user.getJwtToken()
-        return { token }
+        const isPasswordCorrect = user.comparePassword(password);
+
+        if (!isPasswordCorrect)
+            throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password ");
+
+        return sendToken(user, 200, res);
+    }
+    static logoutService = async (req: Request, res: Response, next: NextFunction) => {
+        res.cookie("token", null, {
+            expires: new Date(Date.now()),
+            httpOnly: true
+        })
+        return "ok"
+    }
+    static forgotPasswordService = async (req: Request, res: Response, next: NextFunction) => {
+        const user = await Users.findOne({ email: req.body.email })
+        if (!user) {
+            throw new CustomErrorHandler(httpStatus.NOT_FOUND, "User not found ")
+        }
+        const resetToken = await user.getResetPasswordToken();
+        await user.save({ validateBeforeSave: false })
+
+        const resetPasswordUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${resetToken}`
+        console.log("first")
+        try {
+            console.log("not error")
+            await sendEmail({
+                email: user.email,
+                subject: "Password Reset Token",
+                message: `Forgot your Password?\n Click on this link ${resetPasswordUrl} to reset it.`
+            })
+            return `email sent to ${user.email} successfully`
+        } catch (error) {
+            console.log(error,"error")
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire= undefined;
+            await user.save({validateBeforeSave:false})
+        // return next(new CustomErrorHandler(httpStatus.INTERNAL_SERVER_ERROR,error.message))
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            error: error.message,
+        }); 
+        }
     }
 }

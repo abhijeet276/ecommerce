@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 import { Review } from "./IReview";
 import { Image } from "./IImage";
 export interface ProductDocument extends Document {
@@ -12,4 +12,5 @@ export interface ProductDocument extends Document {
     noOfReviews: number;
     review: Review[];
     createdAt: Date;
+    user:Types.ObjectId
 }
