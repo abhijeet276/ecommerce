@@ -45,9 +45,7 @@ export class UserService {
         await user.save({ validateBeforeSave: false })
 
         const resetPasswordUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${resetToken}`
-        console.log("first")
         try {
-            console.log("not error")
             await sendEmail({
                 email: user.email,
                 subject: "Password Reset Token",
@@ -55,11 +53,9 @@ export class UserService {
             })
             return `email sent to ${user.email} successfully`
         } catch (error) {
-            console.log(error,"error")
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire= undefined;
             await user.save({validateBeforeSave:false})
-        // return next(new CustomErrorHandler(httpStatus.INTERNAL_SERVER_ERROR,error.message))
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
             error: error.message,
         }); 
