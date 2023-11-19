@@ -3,8 +3,9 @@ import { Users } from "../models/users";
 import { CustomErrorHandler } from "../utils/errorHandler";
 import httpStatus from "http-status";
 import { sendToken } from "../utils/jwtToken";
-import { tryCatch } from "../middleware/tryCatch";
+import crypto from "crypto"
 import { sendEmail } from "../utils/sendEmail";
+import { AuthenticatedRequest } from "../interface/IUserSchema";
 
 export class UserService {
     static createUserService = async (req: Request, res: Response) => {
@@ -54,11 +55,63 @@ export class UserService {
             return `email sent to ${user.email} successfully`
         } catch (error) {
             user.resetPasswordToken = undefined;
-            user.resetPasswordExpire= undefined;
-            await user.save({validateBeforeSave:false})
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-            error: error.message,
-        }); 
+            user.resetPasswordExpire = undefined;
+            await user.save({ validateBeforeSave: false })
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+                error: error.message,
+            });
         }
+    }
+    static resetPasswordService = async (req: Request, res: Response, next: NextFunction) => {
+        const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex")
+        const user = await Users.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        })
+        if (!user) {
+            return new CustomErrorHandler(httpStatus.FORBIDDEN, "Invalid token");
+        }
+        if (req.body.password !== req.body.confirmPassword) {
+            return new CustomErrorHandler(httpStatus.CONFLICT, "Passwords do not match");
+        }
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save()
+        return sendToken(user, 200, res);
+    }
+    static getUserDetails = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        const userId = req.user.id as string
+        if (!userId) {
+            return new CustomErrorHandler(httpStatus.UNAUTHORIZED, "No User Found")
+        }
+        const user = await Users.findById(userId)
+        if (!user) {
+            return new CustomErrorHandler(httpStatus.UNAUTHORIZED, 'No User Found')
+        }
+        return user
+    }
+    static updatePasswordService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        const userId = req.user.id as string
+        if (!userId) {
+            return new CustomErrorHandler(httpStatus.UNAUTHORIZED, "No User Found")
+        }
+        const user = await Users.findById(userId).select("+password")
+
+        if (!user) {
+            return new CustomErrorHandler(httpStatus.UNAUTHORIZED, 'No User Found')
+        }
+        const isPasswordCorrect = user.comparePassword(req.body.currentPassword);
+
+        if (!isPasswordCorrect)
+            return new CustomErrorHandler(httpStatus.FORBIDDEN, "inCorrect Password ");
+
+        if (req.body.password !== req.body.confirmPassword) {
+            return new CustomErrorHandler(httpStatus.CONFLICT, "Passwords does not match with confirm Password");
+        }
+        user.password =  req.body.newPassword 
+        await user.save();
+        return sendToken(user, 200, res);
+
     }
 }
