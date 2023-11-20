@@ -32,4 +32,12 @@ export class UserController {
         const data = await UserService.updatePasswordService(req, res,next)
         res.send(data)
       })
+    static updateProfile = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
+        const data = await UserService.updateProfileService(req, res,next)
+        res.send(data)
+      })
+    static getAllUsers = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
+        const data = await UserService.getAllUserService(req, res,next)
+        res.send(data)
+      })
 }

@@ -109,9 +109,35 @@ export class UserService {
         if (req.body.password !== req.body.confirmPassword) {
             return new CustomErrorHandler(httpStatus.CONFLICT, "Passwords does not match with confirm Password");
         }
-        user.password =  req.body.newPassword 
+        user.password = req.body.newPassword
         await user.save();
         return sendToken(user, 200, res);
+
+    }
+    static updateProfileService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        let userId = req.user.id as string;
+        if (!userId) {
+            return new CustomErrorHandler(httpStatus.UNAUTHORIZED, "No User Found")
+        }
+        const user = await Users.findByIdAndUpdate(userId, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!user) {
+            return new CustomErrorHandler(httpStatus.NOT_FOUND, 'No User Found');
+        }
+        return user
+    }
+    static getAllUserService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        try {
+            const users = await Users.find()
+                .populate({ path: 'role', select: '-__v' })
+                .sort('-createdAt');
+            return res.status(httpStatus.OK).json(users);
+        } catch (err) {
+            console.log(err)
+            return err
+        }
 
     }
 }
