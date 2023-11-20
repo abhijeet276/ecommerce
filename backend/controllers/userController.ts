@@ -24,8 +24,8 @@ export class UserController {
         const data = await UserService.resetPasswordService(req, res,next)
         res.send(data)
       })
-    static getUserDetails = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
-        const data = await UserService.getUserDetails(req, res,next)
+    static getMyUserDetails = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
+        const data = await UserService.getMyUserDetailsService(req, res,next)
         res.send(data)
       })
     static updatePassword = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
@@ -38,6 +38,18 @@ export class UserController {
       })
     static getAllUsers = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
         const data = await UserService.getAllUserService(req, res,next)
+        res.send(data)
+      })
+    static getsingleUsers = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
+        const data = await UserService.getsingleUsersService(req, res,next)
+        res.send(data)
+      })
+    static deleteUser = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
+        const data = await UserService.deleteUserUsersService(req, res,next)
+        res.send(data)
+      })
+    static updateUserRole = tryCatch(async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
+        const data = await UserService.updateUserRoleService(req, res,next)
         res.send(data)
       })
 }

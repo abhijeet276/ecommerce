@@ -6,6 +6,7 @@ import { sendToken } from "../utils/jwtToken";
 import crypto from "crypto"
 import { sendEmail } from "../utils/sendEmail";
 import { AuthenticatedRequest } from "../interface/IUserSchema";
+import mongoose from "mongoose";
 
 export class UserService {
     static createUserService = async (req: Request, res: Response) => {
@@ -80,7 +81,7 @@ export class UserService {
         await user.save()
         return sendToken(user, 200, res);
     }
-    static getUserDetails = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    static getMyUserDetailsService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         const userId = req.user.id as string
         if (!userId) {
             return new CustomErrorHandler(httpStatus.UNAUTHORIZED, "No User Found")
@@ -129,15 +130,54 @@ export class UserService {
         return user
     }
     static getAllUserService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-        try {
-            const users = await Users.find()
-                .populate({ path: 'role', select: '-__v' })
-                .sort('-createdAt');
-            return res.status(httpStatus.OK).json(users);
-        } catch (err) {
-            console.log(err)
-            return err
+        const users = await Users.find()
+            .populate({ path: 'role', select: '-__v' })
+            .sort('-createdAt');
+        return users
+    }
+    static getsingleUsersService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        const userId = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return new CustomErrorHandler(httpStatus.BAD_REQUEST, 'Invalid ID')
         }
-
+        const user = await Users.findById(userId).populate({
+            path: 'role',
+            select: '-__v'
+        });
+        if (!user) {
+            return new CustomErrorHandler(httpStatus.NOT_FOUND, 'User not found');
+        }
+        return user;
+    }
+    static deleteUserUsersService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        const userId = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return new CustomErrorHandler(httpStatus.BAD_REQUEST, 'Invalid ID')
+        }
+        const user = await Users.findByIdAndRemove(userId);
+        if (!user) {
+            return new CustomErrorHandler(httpStatus.NOT_FOUND, 'User not found');
+        }
+        return "User Delete Successfullt";
+    }
+    static updateUserRoleService = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        const userId = req.user.id;
+        const newRole = req.body.newRole;
+        const allowedRoles = ['admin', 'user'];
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return new CustomErrorHandler(httpStatus.BAD_REQUEST, 'Invalid ID')
+        }
+        if(newRole === req.user.role){
+            return new CustomErrorHandler(httpStatus.CONFLICT,'You cannot assign the same role');
+        }
+        if (!allowedRoles.includes(newRole)) {
+            return new CustomErrorHandler(httpStatus.BAD_REQUEST, 'Invalid role.');
+        }
+        const updatedUser = await Users.findByIdAndUpdate(
+            userId,
+            { role: newRole },
+            { new: true }
+        ).exec();
+        return updatedUser
     }
 }
