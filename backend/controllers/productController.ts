@@ -23,4 +23,16 @@ export class ProductController {
     const data = await ProductService.getProductByIdService(req)
     res.status(httpStatus.OK).send(data)
   })
+  static createOrUpdateReview = tryCatch(async (req: Request, res: Response) => {
+    const data = await ProductService.createOrUpdateProductReview(req)
+    res.status(httpStatus.OK).send(data)
+  })
+  static getAllReviews = tryCatch(async (req: Request, res: Response) => {
+    const data = await ProductService.getAllReviewsService(req)
+    res.status(httpStatus.OK).send(data)
+  })
+  static deleteReview = tryCatch(async (req: Request, res: Response) => {
+    const data = await ProductService.deleteReviewService(req)
+    res.status(httpStatus.OK).send(data)
+  })
 }

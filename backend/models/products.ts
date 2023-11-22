@@ -47,7 +47,12 @@ const productSchema = new mongoose.Schema<ProductDocument>({
             comment: {
                 type: String,
                 required: true
-            }
+            },
+            user:{
+                type:mongoose.Schema.ObjectId,
+                ref:"Users",
+                required:true
+            },
         }
     ],
     user:{
@@ -60,6 +65,23 @@ const productSchema = new mongoose.Schema<ProductDocument>({
         default: Date.now()
     }
 })
-// const Product = mongoose.model("Product", productSchema);
+productSchema.methods.calculateAverageRating = function () {
+    const totalRating = this.review.reduce((sum, rev) => sum + rev.rating, 0);
+    const numberOfReviews = this.review.length;
+    const avgRating = numberOfReviews > 0 ? totalRating / numberOfReviews : 0;
+    this.rating = avgRating;
+};
+
+productSchema.pre('save', function (next) {
+    this.calculateAverageRating();
+    next();
+});
+
+productSchema.pre('findOneAndUpdate', function (this: any, next) {
+    const document = this.getQuery();
+    document.calculateAverageRating();
+    next();
+});
+
 const Product: Model<ProductDocument> = model<ProductDocument>('Product', productSchema);
 export { Product } 

@@ -12,5 +12,6 @@ export interface ProductDocument extends Document {
     noOfReviews: number;
     review: Review[];
     createdAt: Date;
-    user:Types.ObjectId
+    user:Types.ObjectId;
+    calculateAverageRating():void
 }

@@ -69,4 +69,62 @@ export class ProductService {
         if (!product) throw new CustomErrorHandler(httpStatus.NOT_FOUND, "Product Not Fount");
         return product
     }
+    static createOrUpdateProductReview = async (req: AuthenticatedRequest) => {
+        const { rating, comment, productId } = req.body;
+        const review = {
+            user: req.user.id,
+            name: req.user.name,
+            rating: Number(rating),
+            comment,
+        };
+        const product = await Product.findById(productId);
+        const isReviewed = product.review.find(
+            (rev) => rev.user.toString() === req.user.id.toString()
+        );
+        if (isReviewed) {
+            product.review.forEach(rev => {
+                if (rev.user.toString() === req.user.id.toString()) {
+                    rev.rating = Number(rating);
+                    rev.comment = comment;
+                }
+            });
+        } else product.review.push(review);
+        product.noOfReviews = product.review.length;
+        await product.save();
+        return product;
+    }
+    static getAllReviewsService = async (req: AuthenticatedRequest) => {
+        const productId = req.query.id
+        if (!productId) {
+            return new CustomErrorHandler(httpStatus.BAD_REQUEST, 'Invalid ID')
+        }
+        const product = await Product.findById(productId)
+        if (!product) {
+            return new CustomErrorHandler(httpStatus.NOT_FOUND, 'Product Not Found')
+        }
+        return product.review
+    }
+    static deleteReviewService = async (req: AuthenticatedRequest) => {
+        const productId = req.query.id;
+        console.log('Received productId:', productId);
+        if (!productId) {
+            return new CustomErrorHandler(httpStatus.BAD_REQUEST, 'Invalid ID');
+        }
+        const product = await Product.findById(productId);
+        if (!product) {
+            return new CustomErrorHandler(httpStatus.NOT_FOUND, 'Product Not Found');
+        }
+        let index = -1;
+        product.review.forEach((rev, i) => {
+            if (rev.user.toString() === req.user.id.toString()) index = i;
+        });
+        if (index > -1) {
+            product.review.splice(index, 1);
+            product.noOfReviews = product.review.length;
+            product.calculateAverageRating();
+            await product.save();
+        }
+        return product;
+    }
+
 }

@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema<IUserDocument>({
     role: {
         type: String,
         default: "user",
-        enum:["user","admin"]
+        enum: ["user", "admin"]
     },
     createdAt: {
         type: Date,
@@ -60,10 +60,8 @@ userSchema.methods.getJwtToken = function () {
 userSchema.methods.comparePassword = async function (enterdPassword: string) {
     try {
         const isPasswordMatch = await bcrypt.compare(enterdPassword, this.password);
-        console.log(isPasswordMatch, "invalid email or password")
         return isPasswordMatch;
     } catch (error) {
-        console.log("first invalid email or password")
         throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password");
     }
 }
