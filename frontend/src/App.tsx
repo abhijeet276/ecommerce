@@ -1,20 +1,26 @@
-import Header from "./Component/Layout/Header/Header";
-import { BrowserRouter as Router,Routes,Route} from "react-router-dom";
-import Footer from "./Component/Layout/Footer/Footer";
-import Home from "./Component/Home";
-
+import { Routes } from "react-router-dom";
+import Header from "./Layout/Header";
+import { useTheme } from "./contexts/themeContext";
+import { useEffect } from "react";
+import webFont from "webfontloader"
+import Layout from "./Layout/Layout";
+import "./App.css"
 const App = () => {
+  const { theme,toggleTheme } = useTheme();
+  useEffect(() => {
+    webFont.load({
+      google: { families: ["Roboto", "Droid sans"] }
+    })
+  }, [])
   return (
-    <div style={{ color: "white" }}>
-      <Router>
-        <Header />
+    <div className={`theme-${theme}`}>
+      <div className="content-wrapper">
+        <Layout/>
         <Routes>
-        <Route  path='/' element= {<Home/>} />
         </Routes>
-        <Footer/>
-      </Router>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
