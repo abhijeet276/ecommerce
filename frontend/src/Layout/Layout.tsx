@@ -1,9 +1,12 @@
 import Footer from "./Footer"
 import Header from "./Header"
-
-const Layout = () => {
+export interface ILayout {
+  children: React.ReactNode
+}
+const Layout: React.FC<ILayout> = ({ children }) => {
   return <>
     <Header />
+    {children}
     <Footer />
   </>
 

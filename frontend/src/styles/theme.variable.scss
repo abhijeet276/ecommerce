@@ -5,6 +5,12 @@ $themes: (
     footerColor:#fff,
     textColor: #000,
     toggleBackground: #dfe4ea,
+    gradientBackground:linear-gradient(to right, #635dc0, #3027ae),
+    primaryTextColor:#ffffff,
+    outlinedButtonColor:#fff,
+    outlinedButtonBorder:1px solid #fff,
+    hoveredButtonBackground:#ffffff00
+   
   ),
   dark: (
     bodyBackgroundColor: #222736,
@@ -12,6 +18,12 @@ $themes: (
     footerColor:#c4bbbb,
     textColor: #eff2f7,
     toggleBackground: #606071,
+    gradientBackground:linear-gradient(to bottom, #36394c, #606071),
+    primaryTextColor:#000000,
+    outlinedButtonColor:#000,
+    outlinedButtonBorder:1px solid #fff,
+    hoveredButtonBackground:#ffffffd2
+
   ),
 );
 
