@@ -14,10 +14,10 @@ const Product: React.FC<{ product: IProduct }> = ({ product }) => {
     return <Link className="productCard" to={product._id}>
         <img src={product.images[0].url} alt={product.name} />
         <p>{product.name}</p>
-        <div>
-            <ReactStars {...options} /> <span> (256 Reviews)</span>
+        <div className="starwrapper">
+            <ReactStars {...options}/> <span className="review"> (256 Reviews)</span>
         </div>
-        <span>{product.price}</span>
+        <span  className="price">{product.price}</span>
     </Link>
 }
 export default Product

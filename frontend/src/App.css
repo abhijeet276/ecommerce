@@ -44,3 +44,8 @@
 #root {
   font-family: 'Roboto';
 }
+
+* {
+  margin: 0;
+  scroll-behavior: smooth;
+}

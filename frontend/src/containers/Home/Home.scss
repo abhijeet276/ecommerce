@@ -31,6 +31,7 @@
         @include themify($themes) {
             background-color: themed('outlinedButtonColor');
             border: themed('outlinedButtonBorder');
+            color: themed("textColor");
         }
 
         border-radius: 0;
@@ -72,3 +73,13 @@
     margin: 5vmax auto;
     color: rgb(0, 0, 0, 0.7);
 }
+
+.container {
+    display: flex;
+    margin: 2vmax auto;
+    width: 80vw;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+  }
+  
