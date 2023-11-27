@@ -3,6 +3,7 @@ import app from "./app";
 import db from "./db";
 import { NextFunction, Request, Response } from "express";
 import { ServerHandler } from "./middleware/serverSetup";
+import { proxy } from "./middleware/setupProxy";
 dotenv.config({path:"backend/config/config.env"})
 const port = process.env.PORT || 4000;
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
@@ -11,6 +12,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   }
   next(err);
 });
+app.use(proxy);
 //connection to database 
 db();
 const serverHandler = new ServerHandler(app, Number(port));

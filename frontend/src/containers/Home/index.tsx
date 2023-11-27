@@ -16,7 +16,9 @@ const Home = () => {
   const {products}= useAppSelector(state=>state.product)
   console.log(products)
   useEffect(() => {
-    dispatch(fetchProducts())
+    dispatch(fetchProducts()).unwrap().then(d=>{
+      console.log(d)
+    })
   }, [])
   return (
     <>

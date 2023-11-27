@@ -6,7 +6,7 @@ import { Product, ProductsState } from '../../../types/IProduct';
 
 const fetchProducts = createApiThunk<void, ApiResponse<Product[]>, ApiErrorResponse>({
     name: 'fetchProducts',
-    endpoint: '/api/v1/products',
+    endpoint: 'http://localhost:5000/api/v1/products',
     method: 'GET',
 });
 

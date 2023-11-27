@@ -23,6 +23,7 @@ export class ProductService {
     }
     static getAllProductsService = async (req: Request) => {
         const { page, limit, sortBy, sortOrder, search, minPrice, maxPrice, ...dynamicFilters } = req.query;
+        console.log("first demo")
         const filter: { [key: string]: any } = {};
         //we are checking if we have the min or max price
         if (minPrice !== undefined) {
