@@ -1,19 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { handlePendingAndRejected } from '../rejections';
 import { createApiThunk } from '../createApiThunk';
-import { ApiErrorResponse, ApiResponse } from '../serviceTypes';
-import { Product, ProductsState } from '../../../types/IProduct';
+import { ApiErrorResponse } from '../serviceTypes';
+import { ProductList, ProductsState } from '../../../types/IProduct';
 
-const fetchProducts = createApiThunk<void, ApiResponse<Product[]>, ApiErrorResponse>({
+const fetchProducts = createApiThunk<void, ProductList, ApiErrorResponse>({
     name: 'fetchProducts',
     endpoint: 'http://localhost:5000/api/v1/products',
     method: 'GET',
 });
 
 const initialState: ProductsState = {
-    products: [],
+    products: {} as ProductList,
     status: 'loading',
     error: null,
+    isFetching: false,
+    isSuccess: false,
+    isError: false,
 };
 const productSlice = createSlice({
     name: 'products',
@@ -27,9 +30,12 @@ const productSlice = createSlice({
             .addCase(fetchProducts.rejected, (state, action) => {
                 handlePendingAndRejected(state, action);
             })
-            .addCase(fetchProducts.fulfilled, (state, action) => {
+            .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<ProductList>) => {
                 state.status = 'succeeded';
-                state.products = action.payload.data;
+                state.isFetching = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.products = action.payload;
             });
     },
 });

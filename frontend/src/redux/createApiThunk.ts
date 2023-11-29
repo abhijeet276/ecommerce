@@ -2,8 +2,8 @@ import { createAsyncThunk, SerializedError } from '@reduxjs/toolkit';
 import { fetchDataFromApi } from './apiUtils';
 import { ApiThunkOptions } from './serviceTypes';
 
-export const createApiThunk = <TRequest, TResponse, E = string>(options: ApiThunkOptions<TRequest, TResponse, E>) =>
-    createAsyncThunk(`api/${options.name}`, async (requestData: TRequest, { rejectWithValue }) => {
+export const createApiThunk = <TRequest, TResponse, E = string>(options: ApiThunkOptions<TRequest, TResponse, E>) =>{
+   return createAsyncThunk(`api/${options.name}`, async (requestData: TRequest, { rejectWithValue }) => {
         console.log(requestData)
         try {
             // Call the onRequest 
@@ -34,4 +34,4 @@ export const createApiThunk = <TRequest, TResponse, E = string>(options: ApiThun
             // Use rejectWithValue to provide a structured error object
             return rejectWithValue(error as SerializedError);
         }
-    });
+    })};

@@ -1,9 +1,13 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 
-type StateWithStatus = {
+export type StateWithStatus = {
     status?: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error?: any; // Change this to the specific error type if needed
+    error?: any;
+    isFetching: boolean;
+    isSuccess: boolean;
+    isError: boolean;
 };
+
 
 export const handlePendingAndRejected = <TState extends StateWithStatus>(
     state: TState,
@@ -21,8 +25,14 @@ export const handlePendingAndRejected = <TState extends StateWithStatus>(
 ) => {
     if (action.meta.requestStatus === 'pending') {
         state.status = 'loading';
+        state.isFetching = true;
+        state.isSuccess = false;
+        state.isError = false;
     } else if (action.meta.requestStatus === 'rejected') {
         state.status = 'failed';
         state.error = action.payload;
+        state.isFetching = false;
+        state.isSuccess = false;
+        state.isError = true;
     }
 };
