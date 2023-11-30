@@ -1,10 +1,10 @@
 import { CgMouse } from "react-icons/cg";
 import "./Home.scss";
-import { IProduct } from "../../../types/IProduct";
-import Product from "../Product";
+import { IProduct, Product } from "../../../types/IProduct";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchProducts } from "../../redux/slices/products";
+import ProductCard from "../../components/ProductCard";
 const product: IProduct = {
   name: "Blue Tshirt",
   images: [{ url: "https://i.ibb.co/DRST11n/1.webp" }],
@@ -12,12 +12,14 @@ const product: IProduct = {
   _id: "abhishek",
 };
 const Home = () => {
-  const dispatch =useAppDispatch();
-  const {products}= useAppSelector(state=>state.product)
-  console.log(products)
+  const dispatch = useAppDispatch();
+  const { isFetching } = useAppSelector(state => state.product)
+  const [products, setProducts] = useState<Product[]>([])
   useEffect(() => {
-    dispatch(fetchProducts()).unwrap().then(d=>{
-      console.log(d)
+    dispatch(fetchProducts()).unwrap().then(d => {
+      if (d) {
+        setProducts(d.results)
+      }
     })
   }, [])
   return (
@@ -33,8 +35,8 @@ const Home = () => {
       </div>
       <h2 className="homeHeading">Feature Product</h2>
       <div className="container" id="container">
-        {[0, 1, 2, 3, 4, 5, 6, 7].map(() =>
-          <Product product={product} />
+        {products.slice(0,8).map((item) =>
+          <ProductCard product={item} />
         )}
       </div>
     </>

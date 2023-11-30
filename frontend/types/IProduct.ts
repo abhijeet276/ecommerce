@@ -21,7 +21,7 @@ export interface Product {
     stock: number,
     noOfReviews: number,
     createAt: string,
-    image: [],
+    image: {url:string}[],
     review: []
 }
 
