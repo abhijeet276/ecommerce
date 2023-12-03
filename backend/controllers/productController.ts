@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ProductService } from "../services/productService";
 import httpStatus from "http-status";
 import { tryCatch } from "../middleware/tryCatch";
@@ -11,7 +11,7 @@ export class ProductController {
     const data = await ProductService.updateProductService(req)
     res.status(httpStatus.OK).send(data)
   })
-  static getAllProducts = tryCatch(async (req: Request, res: Response) => {
+  static getAllProducts = tryCatch(async (req: Request, res: Response,next:NextFunction) => {
     const data = await ProductService.getAllProductsService(req)
     res.status(httpStatus.OK).send(data)
   })

@@ -4,7 +4,6 @@ import { ApiThunkOptions } from './serviceTypes';
 
 export const createApiThunk = <TRequest, TResponse, E = string>(options: ApiThunkOptions<TRequest, TResponse, E>) =>{
    return createAsyncThunk(`api/${options.name}`, async (requestData: TRequest, { rejectWithValue }) => {
-        console.log(requestData)
         try {
             // Call the onRequest 
             if (options.onRequest) {

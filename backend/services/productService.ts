@@ -14,7 +14,7 @@ export class ProductService {
     }
 
     static updateProductService = async (req: Request) => {
-        let product = await Product.findById(req.params.id,);
+        let product = await Product.findById(req.params.id);
         if (!product) throw new CustomErrorHandler(httpStatus.NOT_FOUND, "Product Not Fount");
         product = await Product.findByIdAndUpdate(req.params.id, req.body, {
             new: true, runValidators: true, useFindAndModify: false
@@ -23,7 +23,6 @@ export class ProductService {
     }
     static getAllProductsService = async (req: Request) => {
         const { page, limit, sortBy, sortOrder, search, minPrice, maxPrice, ...dynamicFilters } = req.query;
-        console.log("first demo")
         const filter: { [key: string]: any } = {};
         //we are checking if we have the min or max price
         if (minPrice !== undefined) {
@@ -91,7 +90,7 @@ export class ProductService {
             });
         } else product.review.push(review);
         product.noOfReviews = product.review.length;
-        await product.save();
+        await product.save({validateBeforeSave:false});
         return product;
     }
     static getAllReviewsService = async (req: AuthenticatedRequest) => {
@@ -107,7 +106,6 @@ export class ProductService {
     }
     static deleteReviewService = async (req: AuthenticatedRequest) => {
         const productId = req.query.id;
-        console.log('Received productId:', productId);
         if (!productId) {
             return new CustomErrorHandler(httpStatus.BAD_REQUEST, 'Invalid ID');
         }

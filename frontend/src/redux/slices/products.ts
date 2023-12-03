@@ -1,26 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { handlePendingAndRejected } from '../rejections';
-import { createApiThunk } from '../createApiThunk';
-import { ApiErrorResponse } from '../serviceTypes';
-import { ProductList, ProductsState } from '../../../types/IProduct';
-
-const fetchProducts = createApiThunk<void, ProductList, ApiErrorResponse>({
-    name: 'fetchProducts',
-    endpoint: 'http://localhost:5000/api/v1/products',
-    method: 'GET',
-});
-
-const initialState: ProductsState = {
-    products: {} as ProductList,
-    status: 'loading',
-    error: null,
-    isFetching: false,
-    isSuccess: false,
-    isError: false,
-};
+import { ProductList } from '../../../types/IProduct';
+import { fetchProducts } from '../services/productService';
+import { productInitialState } from './state';
 const productSlice = createSlice({
     name: 'products',
-    initialState,
+    initialState: productInitialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
@@ -39,6 +24,4 @@ const productSlice = createSlice({
             });
     },
 });
-
-export { fetchProducts };
 export default productSlice.reducer;
