@@ -17,7 +17,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }: ThemeP
   const [theme, setThemeState] = useState<string>(() => {
     const localStorageTheme = localStorage.getItem('default-theme');
     const browserDefault = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    return localStorageTheme || browserDefault;
+    return localStorageTheme ?? browserDefault;
   });
 
   const toggleTheme = () => {

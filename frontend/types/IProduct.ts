@@ -36,4 +36,5 @@ export interface ProductsState {
     isFetching: boolean,
     isSuccess: boolean,
     isError: boolean,
+    product:Product
 }

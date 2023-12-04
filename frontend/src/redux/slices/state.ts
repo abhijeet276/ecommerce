@@ -1,4 +1,4 @@
-import { ProductList, ProductsState } from "../../../types/IProduct";
+import { Product, ProductList, ProductsState } from "../../../types/IProduct";
 
 export const productInitialState: ProductsState = {
     products: {} as ProductList,
@@ -7,4 +7,5 @@ export const productInitialState: ProductsState = {
     isFetching: false,
     isSuccess: false,
     isError: false,
+    product:{} as Product
 };

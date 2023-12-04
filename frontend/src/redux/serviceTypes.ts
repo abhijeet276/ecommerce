@@ -27,4 +27,5 @@ export interface ApiThunkOptions<TRequest, TResponse, E = string> {
     onSuccess?: (data: TResponse) => void;
     onError?: (error: E) => void;
     onRequest?: (data: TRequest) => void;
+    dynamicEndpoint?: (requestData: TRequest) => string;
 }

@@ -4,6 +4,12 @@ import { ApiErrorResponse } from "../serviceTypes";
 
 export const fetchProducts = createApiThunk<void, ProductList, ApiErrorResponse>({
     name: 'fetchProducts',
-    endpoint: 'http://localhost:5000/api/v1/products',
+    endpoint: `/api/v1/products`,
     method: 'GET',
+});
+export const fetchSelectedProduct = createApiThunk<{id:string}, ProductList, ApiErrorResponse>({
+    name: 'selectedProduct',
+    endpoint:"",
+    method: 'GET',
+    dynamicEndpoint:({id})=>`/api/v1/products${id}`
 });
