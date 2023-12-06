@@ -10,7 +10,7 @@ const options: Record<string, any> = {
     isHalf: true,
 };
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-    return <Link className="productCard" to={product._id}>
+    return <Link className="productCard" to={`product/${product._id}`}>
         <img src={product.image[0]?.url} alt={product.name} />
         <p>{product.name}</p>
         <div className="starwrapper">

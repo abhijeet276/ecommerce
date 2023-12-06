@@ -2,7 +2,7 @@ import express, { Router } from "express"
 import { ProductController } from "../controllers/productController"
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 const router = express.Router();
-router.route("/create-product").post(authorizeRoles("admin"), ProductController.createProduct);
+router.route("/create-product").post(isAuthenticated,authorizeRoles("admin"), ProductController.createProduct);
 router.route("/").get(ProductController.getAllProducts);
 router.route("/review").put(ProductController.createOrUpdateReview)
 router.route("/review")

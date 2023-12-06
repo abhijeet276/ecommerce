@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import Header from "./Layout/Header";
 import { useTheme } from "./contexts/themeContext";
 import { useEffect } from "react";
 import webFont from "webfontloader"
 import Layout from "./Layout/Layout";
 import "./App.css"
 import Home from "./containers/Home";
+import ProductDetail from "./containers/ProductDetail";
 const App = () => {
   const { theme,toggleTheme } = useTheme();
   console.log(theme)
@@ -20,6 +20,7 @@ const App = () => {
        
         <Routes>
           <Route path="/" element={<Layout><Home/></Layout>}/>
+          <Route path="/product/:id" element={<Layout><ProductDetail/></Layout>}/>
         </Routes>
       </div>
     </div>

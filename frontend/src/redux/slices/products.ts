@@ -19,20 +19,23 @@ const productSlice = createSlice({
                 state.isError = false;
                 state.products = action.payload;
             })
-            .addCase(fetchSelectedProduct.fulfilled,(state,action)=>{
-                
+            .addCase(fetchSelectedProduct.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.isFetching = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.product = action.payload;
             })
             .addMatcher(
-                (action) => [fetchProducts.pending, fetchSelectedProduct.pending].includes(action.type),
+                (action) => action.type.endsWith('/pending') && action.type.includes('selectedProduct'),
                 (state, action) => {
                     handlePendingAndRejected(state, action as PendingAction);
                 }
             )
             .addMatcher(
-                (action) => [fetchProducts.rejected, fetchSelectedProduct.rejected].includes(action.type),
+                (action) => action.type.endsWith('/rejected') && action.type.includes('selectedProduct'),
                 (state, action) => {
                     handlePendingAndRejected(state, action as RejectedAction);
-
                 }
             )
     },
