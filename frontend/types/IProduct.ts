@@ -9,6 +9,12 @@ export interface IProduct {
     price: string,
     _id: string,
 }
+export interface IReview {
+    name: string;
+    rating: number;
+    comment: string;
+    user: string
+}
 
 export interface Product {
     createdAt: string,
@@ -21,8 +27,8 @@ export interface Product {
     stock: number,
     noOfReviews: number,
     createAt: string,
-    image: {url:string}[],
-    review: []
+    image: { url: string }[],
+    review: IReview[]
 }
 
 export interface ProductList extends IPageable {
@@ -30,11 +36,11 @@ export interface ProductList extends IPageable {
 }
 
 export interface ProductsState {
-    products:ProductList;
+    products: ProductList;
     status: 'loading' | 'succeeded' | 'failed';
     error: any;
     isFetching: boolean,
     isSuccess: boolean,
     isError: boolean,
-    product:Product
+    product: Product
 }
