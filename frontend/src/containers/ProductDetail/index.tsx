@@ -9,14 +9,20 @@ import "./productDetail.scss"
 import { RatingComponent } from "../../components/Rating";
 import Reviews from "../../components/Reviews";
 import { Box } from "@mui/material";
+import { useAlert } from "react-alert";
 type ProductParams = {
   id: string;
 };
 const ProductDetail = () => {
-  const { isFetching } = useAppSelector(state => state.product)
+  const { isFetching, error, isError } = useAppSelector(state => state.product)
   const dispatch = useAppDispatch()
   const params = useParams<ProductParams>();
-  const [product, setProduct] = useState<Product>({} as Product)
+  const [product, setProduct] = useState<Product>({} as Product);
+  const alert = useAlert()
+  useEffect(() => {
+    if (isError) alert.error(error)
+  }, [error])
+
   useEffect(() => {
     if (params.id)
       dispatch(fetchSelectedProduct({ id: params.id })).unwrap().then(res =>
@@ -38,7 +44,7 @@ const ProductDetail = () => {
           <p>Product # {product._id}</p>
         </div>
         <div className="detailsBlock-2">
-          <RatingComponent  value={Number(product.rating)} />
+          <RatingComponent value={Number(product.rating)} />
           <span className="detailsBlock-2-span">
             {" "}
             ({product.noOfReviews} Reviews)

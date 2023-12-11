@@ -6,8 +6,10 @@ import Layout from "./Layout/Layout";
 import "./App.css"
 import Home from "./containers/Home";
 import ProductDetail from "./containers/ProductDetail";
+import Products from "./containers/Products";
+import Search from "./containers/Products/Search";
 const App = () => {
-  const { theme,toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   console.log(theme)
   useEffect(() => {
     webFont.load({
@@ -17,10 +19,11 @@ const App = () => {
   return (
     <div className={`theme-${theme}`}>
       <div className="content-wrapper">
-       
         <Routes>
-          <Route path="/" element={<Layout><Home/></Layout>}/>
-          <Route path="/product/:id" element={<Layout><ProductDetail/></Layout>}/>
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/products" element={<Layout><Products /></Layout>} />
+          <Route path="/Search" element={<Layout><Search /></Layout>} />
+          <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
         </Routes>
       </div>
     </div>
