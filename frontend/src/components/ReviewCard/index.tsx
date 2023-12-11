@@ -1,7 +1,7 @@
-import profilePng from "../../images/Profile.png";
+import profilePng from "../../assets/logo/Profile.png";
 import { IReview } from "../../../types/IProduct";
 import { RatingComponent } from "../Rating";
-
+import "./reviewcard.scss"
 const ReviewCard = ({ review }: { review: IReview }) => {
     return (
         <div className="reviewCard">

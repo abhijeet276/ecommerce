@@ -7,12 +7,13 @@ import { Product } from "../../../types/IProduct";
 import Loader from "../../components/Loader";
 import "./productDetail.scss"
 import { RatingComponent } from "../../components/Rating";
+import Reviews from "../../components/Reviews";
+import { Box } from "@mui/material";
 type ProductParams = {
   id: string;
 };
 const ProductDetail = () => {
   const { isFetching } = useAppSelector(state => state.product)
-  console.log(isFetching)
   const dispatch = useAppDispatch()
   const params = useParams<ProductParams>();
   const [product, setProduct] = useState<Product>({} as Product)
@@ -24,11 +25,11 @@ const ProductDetail = () => {
   return <>
     <div className="productDetails">
       <div className="container">
-        <Carousel sx={{ width: "100%", textAlign: "center" }}>
-          {product && product.image &&
-            product.image.map((img, index) =>
-              <img className="carouselImage" key={index} src={img.url} alt="Product Image" />
-            )}
+        <Carousel animation="slide" sx={{ width: "100%", textAlign: "center" }}>
+          {product && Array.isArray(product.image) ?
+            product.image.map((img) =>
+              <img className="carouselImage" key={img.url} src={img.url} alt="Product Image" />
+            ) : "No Images are found"}
         </Carousel>
       </div>
       <div className="container">
@@ -37,7 +38,7 @@ const ProductDetail = () => {
           <p>Product # {product._id}</p>
         </div>
         <div className="detailsBlock-2">
-          <RatingComponent />
+          <RatingComponent  value={Number(product.rating)} />
           <span className="detailsBlock-2-span">
             {" "}
             ({product.noOfReviews} Reviews)
@@ -58,7 +59,7 @@ const ProductDetail = () => {
 
           <p>
             Status:
-            <b className={product.stock < 1 ? "redColor" : "greenColor"}>
+            <b style={{ color: product.stock < 1 ? "red" : "green" }}>
               {product.stock < 1 ? "OutOfStock" : "InStock"}
             </b>
           </p>
@@ -74,6 +75,9 @@ const ProductDetail = () => {
       </div>
     </div>
     <h3 className="reviewsHeading">REVIEWS</h3>
+    {product.review && Array.isArray(product.review) && product.review.length > 0 ?
+      <Box className={"reviews"}><Reviews reviews={product.review} /></Box>
+      : <p className="noReview">No Reviews Yet</p>}
     {isFetching && <Loader />}
   </>
 }
