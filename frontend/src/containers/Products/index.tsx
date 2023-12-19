@@ -12,12 +12,14 @@ const Products = () => {
     const [products, setProducts] = useState<Product[]>([])
     useEffect(() => {
         if (isError) alert.error(error.message)
-    }, [error])
+    }, [error]);
+
     useEffect(() => {
         dispatch(fetchProducts()).unwrap().then(d => {
             if (d && Array.isArray(d.results)) setProducts(d.results)
         })
-    }, [])
+    }, []);
+
     return (
         <>
             <h2 className="productsHeading">Products</h2>
