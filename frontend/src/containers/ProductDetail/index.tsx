@@ -27,7 +27,7 @@ const ProductDetail = () => {
     if (params.id)
       dispatch(fetchSelectedProduct({ id: params.id })).unwrap().then(res =>
         setProduct(res))
-  }, [params])
+  }, [params]);
   return <>
     <div className="productDetails">
       <div className="container">
