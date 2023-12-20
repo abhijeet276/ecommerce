@@ -1,12 +1,13 @@
 import { CgMouse } from "react-icons/cg";
-import "./Home.scss";
 import { Product } from "../../../types/IProduct";
+import { fetchProducts } from "../../redux/services/productService";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useEffect, useState } from "react";
 import ProductCard from "../../components/ProductCard";
+import { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
 import { useAlert } from "react-alert";
-import { fetchProducts } from "../../redux/services/productService";
+import "./Home.scss";
+
 const Home = () => {
   const dispatch = useAppDispatch();
   const alert = useAlert()

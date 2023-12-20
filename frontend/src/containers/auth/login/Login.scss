@@ -6,12 +6,12 @@
   border-radius: 40px;
   padding: 25px 35px;
   border: 5px solid rgb(255, 255, 255);
-  box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+  box-shadow: tomato 0px 15px 30px -20px;
   .heading {
     text-align: center;
     font-weight: 900;
     font-size: 30px;
-    color: rgb(16, 137, 211);
+    color: tomato;
     width: 100%;
     margin-bottom: 20px;
   }
@@ -31,7 +31,7 @@
       margin-left: 10px;
       a {
         font-size: 11px;
-        color: #0099ff;
+        color: tomato;
         text-decoration: none;
       }
     }
@@ -41,11 +41,11 @@
 
     .custom-file-label {
       background-color: #fff;
-      color: rgb(16, 137, 211);
+      color: tomato;
       padding: 10px;
       border: none;
       border-radius: 5px;
-      border: 1px dashed rgb(16, 137, 211);
+      border: 1px dashed tomato;
       cursor: pointer;
       display: block;
       text-align: center;
