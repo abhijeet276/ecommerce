@@ -55,7 +55,7 @@ const orderSchema = new Schema<OrderDocument>(
     ],
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users",
       required: true,
     },
     paymentInfo: {

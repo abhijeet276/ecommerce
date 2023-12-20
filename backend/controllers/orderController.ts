@@ -8,13 +8,12 @@ export class OrderController {
       const data = await OrderService.newOrder(req, res)
       res.send(data)
     })
-    static SelectedOrder = tryCatch(async (req: AuthenticatedRequest, res: Response) => {
-      const data = await OrderService.SelectedOrder(req, res)
+    static order = tryCatch(async (req: AuthenticatedRequest, res: Response) => {
+      const data = await OrderService.MyOrder(req, res)
       res.send(data)
     })
-    static MyOrder = tryCatch(async (req: AuthenticatedRequest, res: Response) => {
-        console.log("first")
-      const data = await OrderService.MyOrder(req, res)
+    static SelectedOrder = tryCatch(async (req: AuthenticatedRequest, res: Response) => {
+      const data = await OrderService.SelectedOrder(req, res)
       res.send(data)
     })
 }

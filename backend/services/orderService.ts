@@ -44,8 +44,7 @@ export class OrderService {
         return order
     }
     static MyOrder = async (req: AuthenticatedRequest, res: Response) => {
-        const order = await Order.find(req.user.id)
-        console.log(order,req.user.id)
+        const order = await Order.findOne({user:req.user.id})
         if (!order) {
             return new CustomErrorHandler(httpStatus.NOT_FOUND, "No Order with this ID found!");
         }
