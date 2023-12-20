@@ -59,6 +59,7 @@ const Login = () => {
                     placeholder="enter your email"
                     value={inputDetails.email}
                     onChange={handleInputChange}
+                    required
                 />
                 <span className="error-message">{errors.email}</span>
                 <TextField
@@ -68,6 +69,7 @@ const Login = () => {
                     placeholder="enter your password"
                     value={inputDetails.password}
                     onChange={handleInputChange}
+                    required
                 />
                 <span className="error-message">{errors.password}</span>
                 <span className="forgot-password"><a href="#">Forgot Password ?</a></span>
