@@ -2,13 +2,17 @@ import React, { useState } from 'react'
 import TextField from '../../../components/Inputs';
 import CustomButton from '../../../components/button';
 import '../login/Login.scss'
+import { useAppDispatch } from '../../../redux/hooks';
+import { userSignup } from '../../../redux/services/authService';
 
 const Signup = () => {
     const [inputDetails, setInputDetails] = useState({
-        userName: "",
+        name: "",
         email: "",
         password: ""
     });
+
+    const dispatch = useAppDispatch();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name;
@@ -18,8 +22,13 @@ const Signup = () => {
     }
 
     const HandleFormSubmit = () => {
-
-    }
+        dispatch(userSignup(inputDetails)).unwrap().then(data => (
+            localStorage.setItem("token", data.token),
+            console.log(data, "dataaaaaa")
+        )).catch((error) => (
+            console.log(error, "errorrrrrr")
+        ))
+    };
 
     const registerDataChange = () => {
 
@@ -31,11 +40,11 @@ const Signup = () => {
             <form className="form" action="">
                 <TextField
                     type="text"
-                    name="userName"
+                    name="name"
                     placeholder="enter your name"
                     required
                     label="Name"
-                    value={inputDetails.userName}
+                    value={inputDetails.name}
                     onChange={handleInputChange}
                     className='inputField'
                 />

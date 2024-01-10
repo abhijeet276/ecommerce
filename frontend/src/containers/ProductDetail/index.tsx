@@ -10,6 +10,7 @@ import { RatingComponent } from "../../components/Rating";
 import Reviews from "../../components/Reviews";
 import { Box } from "@mui/material";
 import { useAlert } from "react-alert";
+import { fetchAddToCart } from "../../redux/services/cartService";
 type ProductParams = {
   id: string;
 };
@@ -18,7 +19,31 @@ const ProductDetail = () => {
   const dispatch = useAppDispatch()
   const params = useParams<ProductParams>();
   const [product, setProduct] = useState<Product>({} as Product);
-  const alert = useAlert()
+  const [quantity, setQuantity] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const alert = useAlert();
+
+  const increaseQuantity = () => {
+    // if (product.Stock <= quantity) return;
+
+    const qty = quantity + 1;
+    setQuantity(qty);
+  };
+
+  const decreaseQuantity = () => {
+    if (1 >= quantity) return;
+
+    const qty = quantity - 1;
+    setQuantity(qty);
+  };
+
+  const addToCartHandler = (id: any) => {
+    dispatch(fetchAddToCart({ id, quantity }));
+    // alert.success("Item Added To Cart");
+  };
+
   useEffect(() => {
     if (isError) alert.error(error)
   }, [error])
@@ -28,6 +53,7 @@ const ProductDetail = () => {
       dispatch(fetchSelectedProduct({ id: params.id })).unwrap().then(res =>
         setProduct(res))
   }, [params]);
+
   return <>
     <div className="productDetails">
       <div className="container">
@@ -54,11 +80,15 @@ const ProductDetail = () => {
           <h1>{`₹${product.price}`}</h1>
           <div className="detailsBlock-3-1">
             <div className="detailsBlock-3-1-1">
-              <button >-</button>
-              <input readOnly type="number" value="1" />
-              <button >+</button>
+              <button onClick={decreaseQuantity} >-</button>
+              <input readOnly type="number" value={quantity} />
+              <button onClick={increaseQuantity} >+</button>
             </div>
-            <button className="addTocart">
+            <button
+              className="addTocart"
+              //  disabled={product.Stock < 1 ? true : false}
+              onClick={() => addToCartHandler(product._id)}
+            >
               Add to Cart
             </button>
           </div>

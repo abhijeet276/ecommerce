@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import TextField from '../../../components/Inputs';
 import CustomButton from '../../../components/button';
 import { useAppDispatch } from '../../../redux/hooks';
+import { updatePassword } from '../../../redux/services/authService';
 
 // type Props = {}
 
 const ForgotPassword: React.FC = () => {
-	const [fieldValue, setFieldValue] = useState();
+	const [fieldValue, setFieldValue] = useState(
+		{ email: '' }
+	);
 
 	const dispatch = useAppDispatch();
 
@@ -18,11 +21,12 @@ const ForgotPassword: React.FC = () => {
 	};
 
 	const handleSubmit = () => {
-		dispatch(updatePassword()).unwrap().then(d => {
-			if (d && Array.isArray(d.results))
-				setFieldValue(d.results)
-		})
-	}
+		dispatch(updatePassword(fieldValue)).unwrap().then(data => (
+			console.log(data)
+		)).catch((error) => (
+			console.log(error)
+		))
+	};
 	return (
 		<div className="form-container">
 			<div className="logo-container">
@@ -36,7 +40,7 @@ const ForgotPassword: React.FC = () => {
 						id="email"
 						name="email"
 						label=""
-						value={fieldValue}
+						value={fieldValue.email}
 						required
 						onChange={handleChange}
 						placeholder="Enter your email"
@@ -46,7 +50,7 @@ const ForgotPassword: React.FC = () => {
 			</form>
 			<p className="signup-link">
 				Don't have an account?
-				<Link to="#" className="signup-link link"> Sign up now</Link>
+				<Link to="/signup" className="signup-link link"> Sign up now</Link>
 			</p>
 		</div>
 	)

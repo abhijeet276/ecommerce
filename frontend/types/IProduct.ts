@@ -1,46 +1,61 @@
-import { IPageable } from "./IPageable";
+import { User, userList } from './ILogin';
+import { IPageable } from './IPageable';
 
 export interface IImage {
-    url: string
+  url: string;
 }
 export interface IProduct {
-    name: string,
-    images: IImage[],
-    price: string,
-    _id: string,
+  name: string;
+  images: IImage[];
+  price: string;
+  _id: string;
 }
 export interface IReview {
-    name: string;
-    rating: number;
-    comment: string;
-    user: string
+  name: string;
+  rating: number;
+  comment: string;
+  user: string;
 }
 
 export interface Product {
-    createdAt: string,
-    _id: string,
-    name: string,
-    description: string,
-    price: number,
-    category: string,
-    rating: number,
-    stock: number,
-    noOfReviews: number,
-    createAt: string,
-    image: { url: string }[],
-    review: IReview[]
+  createdAt: string;
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  rating: number;
+  stock: number;
+  noOfReviews: number;
+  createAt: string;
+  image: { url: string }[];
+  review: IReview[];
 }
 
 export interface ProductList extends IPageable {
-    results: Product[]
+  results: Product[];
 }
 
 export interface ProductsState {
-    products: ProductList;
-    status: 'loading' | 'succeeded' | 'failed';
-    error: any;
-    isFetching: boolean,
-    isSuccess: boolean,
-    isError: boolean,
-    product: Product
+  products: ProductList;
+  status: 'loading' | 'succeeded' | 'failed';
+  error: any;
+  isFetching: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  product: Product;
+}
+
+export interface userState {
+  user: userList;
+  status: 'loading' | 'succeeded' | 'failed';
+  error: any;
+  isFetching: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+}
+export interface productListReq {
+  page: number;
+  category?: string;
+  price?: [number, number];
 }

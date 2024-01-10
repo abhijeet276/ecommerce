@@ -4,18 +4,20 @@ import { useEffect, useState } from "react";
 import ProductCard from "../../components/ProductCard";
 import { useAlert } from "react-alert";
 import { fetchProducts } from "../../redux/services/productService";
-import "./products.scss"
+import "./products.scss";
+
 const Products = () => {
     const dispatch = useAppDispatch();
     const alert = useAlert()
     const { isFetching, isError, error } = useAppSelector(state => state.product)
     const [products, setProducts] = useState<Product[]>([])
+
     useEffect(() => {
         if (isError) alert.error(error.message)
     }, [error]);
 
     useEffect(() => {
-        dispatch(fetchProducts()).unwrap().then(d => {
+        dispatch(fetchProducts({ page: 1 })).unwrap().then(d => {
             if (d && Array.isArray(d.results)) setProducts(d.results)
         })
     }, []);
