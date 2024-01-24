@@ -36,7 +36,7 @@
       & div {
         display: flex;
         width: 100%;
-        align-items: start;
+        align-items: flex-start;
         flex-direction: column;
         & input {
           padding: 1vmax;
@@ -89,7 +89,7 @@
         border: none;
         background-color: tomato;
         color: white;
-        font: 300 0.9vmax 'Roboto';
+        font: 300 0.9vmax 'Roboto' 'san-serif';
         width: 100%;
         padding: 0.8vmax;
         cursor: pointer;
@@ -174,7 +174,7 @@
   }
 
   .updateProfileBtn {
-    font: 300 1.9vmax 'Roboto';
+    font: 300 1.9vmax 'Roboto' 'san-serif';
     padding: 1.8vmax;
   }
 }

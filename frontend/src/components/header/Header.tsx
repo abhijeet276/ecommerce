@@ -8,6 +8,7 @@ import { logoutUser } from '../../redux/services/authService';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../search';
 import './Header.scss';
+import { ClickAwayListener } from '@mui/material';
 
 const Header = () => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -51,11 +52,13 @@ const Header = () => {
 					onClick={toggleDropdown}
 				/>
 				{isDropdownOpen && (
+					<ClickAwayListener onClickAway={()=>{setIsDropdownOpen(false)}}>
 					<div className="dropdown">
 						<p onClick={handleProfile}>Profile</p>
 						<p onClick={() => alert('Settings')}>Settings</p>
 						<p onClick={() => handleLogout()}>Logout</p>
 					</div>
+				</ClickAwayListener>
 				)}
 			</div>
 		</header>
