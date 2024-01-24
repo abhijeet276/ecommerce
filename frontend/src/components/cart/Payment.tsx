@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useRef } from "react";
-import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector, useDispatch } from "react-redux";
 import { Typography } from "@material-ui/core";
 import { useAlert } from "react-alert";
@@ -18,6 +17,7 @@ import EventIcon from "@material-ui/icons/Event";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 // import { createOrder, clearErrors } from "../../actions/orderAction";
 import { useNavigation } from "react-router-dom";
+import CheckoutSteps from "./CheckoutSteps";
 
 const Payment = () => {
     // const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
@@ -117,7 +117,6 @@ const Payment = () => {
 
     return (
         <Fragment>
-            <MetaData title="Payment" />
             <CheckoutSteps activeStep={2} />
             <div className="paymentContainer">
                 <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>

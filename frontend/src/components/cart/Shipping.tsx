@@ -3,11 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 // import { saveShippingInfo } from "../../actions/cartAction";
 import { Country, State } from "country-state-city";
 import { useAlert } from "react-alert";
-// import CheckoutSteps from "../Cart/CheckoutSteps";
+import CheckoutSteps from "../Cart/CheckoutSteps";
 import "./Shipping.scss";
 import { useNavigate } from "react-router-dom";
 import TextField from "../Inputs";
-import CheckoutSteps from "./CheckoutSteps";
 
 const Shipping = () => {
     const dispatch = useDispatch();
