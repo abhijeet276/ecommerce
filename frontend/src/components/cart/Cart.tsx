@@ -3,7 +3,6 @@ import "./Cart.scss";
 import CartItemCard from "./CartItemCard";
 import { useSelector, useDispatch } from "react-redux";
 // import { addItemsToCart, removeItemsFromCart } from "../../actions/cartAction";
-import { Typography } from "@material-ui/core";
 import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {

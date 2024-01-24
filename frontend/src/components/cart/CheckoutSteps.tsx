@@ -1,15 +1,16 @@
 import React, { Fragment } from "react";
-import { Typography, Stepper, StepLabel, Step } from "@material-ui/core";
-import LocalShippingIcon from "@material-ui/icons/LocalShipping";
-import LibraryAddCheckIcon from "@material-ui/icons/LibraryAddCheck";
-import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import LibraryAddCheckIcon from "@mui/icons-material/LibraryAddCheck";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import "./CheckoutSteps.scss";
-import { StepButton, StepIconProps } from "@mui/material";
+import { Step, StepIconProps, StepLabel, Stepper, Typography } from "@mui/material";
 
 interface ICheckout {
     activeStep: number;
 }
-
+const stepStyles = {
+    boxSizing: "border-box",
+};
 const CheckoutSteps: React.FC<ICheckout> = ({ activeStep = 0 }) => {
     const steps = [
         {
@@ -24,11 +25,7 @@ const CheckoutSteps: React.FC<ICheckout> = ({ activeStep = 0 }) => {
             label: <Typography>Payment</Typography>,
             icon: AccountBalanceIcon,
         },
-    ];
-
-    const stepStyles = {
-        boxSizing: "border-box",
-    };
+    ]; 
     function ColorlibStepIcon(props: StepIconProps) {
 
         const icons: { [index: string]: React.ReactElement } = {
@@ -43,7 +40,7 @@ const CheckoutSteps: React.FC<ICheckout> = ({ activeStep = 0 }) => {
     const handleStep = (step: number) => () => {
     };
     return (
-        <Fragment>
+        <>
             <Stepper alternativeLabel activeStep={activeStep} style={stepStyles}>
                 {steps.map((item, index) => (
                     <Step
@@ -63,7 +60,7 @@ const CheckoutSteps: React.FC<ICheckout> = ({ activeStep = 0 }) => {
                     </Step>
                 ))}
             </Stepper>
-        </Fragment>
+        </>
     );
 };
 

@@ -19,8 +19,8 @@ import ConfirmOrder from "./components/cart/ConfirmOrder";
 import Shipping from "./components/cart/Shipping";
 import Payment from "./components/cart/Payment";
 import Cart from "./components/cart/Cart";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+// import { Elements } from "@stripe/react-stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import "./App.css"
 
@@ -63,11 +63,11 @@ const App = () => {
           <Route path="/Cart" element={<Layout><Cart /></Layout>} />
           <Route path="/shipping" element={<Layout><Shipping /></Layout>} />
           <Route path="/order/confirm" element={<Layout><ConfirmOrder /></Layout>} />
-          {stripeApiKey && (
+          {/* {stripeApiKey && (
             <Elements stripe={loadStripe(stripeApiKey)}>
               <ProtectedRoute path="/process/payment" element={<Payment />} />
             </Elements>
-          )}
+          )} */}
           {/* <ProtectedRoute path="/home" element={<Layout><Home /></Layout>} />
           <ProtectedRoute path="/products" element={<Layout><Products /></Layout>} />
           <ProtectedRoute path="/search" element={<Layout><Search /></Layout>} />
