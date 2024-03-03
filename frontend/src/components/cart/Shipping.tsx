@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Country, State } from "country-state-city";
 import { useAlert } from "react-alert";
-import CheckoutSteps from "../cart/CheckoutSteps";
+import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
 import TextField from "../Inputs";
 import { saveShippingInfo } from "../../redux/slices/cartSlice";

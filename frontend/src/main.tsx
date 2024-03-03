@@ -1,13 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import { ThemeProvider } from './contexts/themeContext.tsx'
-import { BrowserRouter } from "react-router-dom"
-import { persistor, store } from './redux/store.ts'
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
+import { ThemeProvider } from './contexts/themeContext.tsx';
+import { BrowserRouter } from "react-router-dom";
+import { persistor, store } from './redux/store.ts';
 import { Provider } from 'react-redux';
 import { transitions, positions, Provider as AlertProvider, AlertProviderProps } from "react-alert";
-import AlertTemplate from "react-alert-template-basic"
-import { PersistGate } from 'redux-persist/integration/react'
+import AlertTemplate from "react-alert-template-basic";
+import { PersistGate } from 'redux-persist/integration/react';
+import "./index.scss";
 const options: AlertProviderProps = {
   timeout: 5000,
   template: AlertTemplate,

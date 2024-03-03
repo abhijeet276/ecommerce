@@ -10,7 +10,7 @@ const persistConfig = {
   storage,
   version: 1,
   stateReconciles: hardSet as (inboundState: CombinedState) => CombinedState,
-  whitelist: ['cart', 'users'],
+  blacklist: ['cart', 'users'],
 };
 type CombinedState = typeof rootReducer extends Reducer<infer U, any> ? U : never;
 

@@ -1,5 +1,5 @@
 import { Product } from "../../../types/IProduct"
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import './productCard.scss'
 import { RatingComponent } from "../Rating";
 import { useAppDispatch } from "../../redux/hooks";
@@ -8,7 +8,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     let dispatch = useAppDispatch();
 
 
-    return <Link className="productCard" to={`product/${product._id}`}>
+    return <NavLink className="productCard" to={`product/${product._id}`}>
         <img src={product.image[0]?.url} alt={product.name} />
         <p>{product.name}</p>
         <div className="starwrapper">
@@ -16,6 +16,6 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </div>
         <span className="price">{`₹${product.price}`}</span>
 
-    </Link>
+    </NavLink>
 }
 export default ProductCard

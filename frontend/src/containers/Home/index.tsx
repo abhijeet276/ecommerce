@@ -41,6 +41,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchProducts({ page, category, price })).unwrap().then(d => {
+      setTotalPage(d.totalPages)
       if (d && Array.isArray(d.results)) setProducts(d.results)
     })
   }, [price, category, page]);
@@ -59,7 +60,7 @@ const Home = () => {
       <h2 className="homeHeading">Feature Product</h2>
       <div className="container" id="container">
         {products.slice(0, 8).map((item) =>
-          <ProductCard product={item} />
+          <ProductCard product={item} key={item._id}/>
         )}
       </div>
 

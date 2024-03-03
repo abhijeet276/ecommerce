@@ -23,8 +23,7 @@ export class UserService {
         if (!user)
             throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password ");
         // compare the hashed password with the provided one
-
-        const isPasswordCorrect = user.comparePassword(password);
+        const isPasswordCorrect = await user.comparePassword(password);
 
         if (!isPasswordCorrect)
             throw new CustomErrorHandler(httpStatus.FORBIDDEN, "invalid email or password ");

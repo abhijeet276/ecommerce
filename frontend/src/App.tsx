@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import { useTheme } from "./contexts/themeContext";
 import { useEffect, useState } from "react";
 import webFont from "webfontloader"
@@ -11,7 +11,6 @@ import ProfileCard from "./containers/profile";
 import ForgotPassword from "./containers/auth/forgotPassword";
 import Login from "./containers/auth/login";
 import Signup from './containers/auth/signup';
-import ProtectedRoute from "./Layout/protectedRoute/ProtectedRoute";
 import UpdateProfile from "./containers/profile/UpdateProfile";
 import UpdatePassword from "./containers/auth/updatePassword/UpdatePassword";
 import ResetPassword from "./containers/auth/resetPassword/ResetPassword";
@@ -23,7 +22,7 @@ import Cart from "./components/Cart/Cart";
 // import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import Profile from "./containers/profile";
-import OrderSuccess from "./components/cart/OrderSuccess";
+import OrderSuccess from "./components/Cart/OrderSuccess";
 import MyOrders from "./components/Order/MyOrders";
 import "./App.css"
 import { Elements } from "@stripe/react-stripe-js";
@@ -54,20 +53,22 @@ const App = () => {
         <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Layout><Home /></Layout>} />
-          <Route path="/products" element={<Layout><Products /></Layout>} />
-          <Route path="/Search" element={<Layout><Search /></Layout>} />
-          <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
-          <Route path="/account" element={<Layout><Profile /></Layout>} />
-          <Route path="/me/update" element={<Layout><UpdateProfile /></Layout>} />
-          <Route path="/password/update" element={<Layout><UpdatePassword /></Layout>} />
-          <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
-          <Route path="/reset-password/:token" element={<Layout><ResetPassword /></Layout>} />
-          <Route path="/Cart" element={<Layout><Cart /></Layout>} />
-          <Route path="/shipping" element={<Layout><Shipping /></Layout>} />
-          <Route path="/order/confirm" element={<Layout><ConfirmOrder /></Layout>} />
-          <Route path="/process/payment" element={<Layout><Payment /></Layout>} />
-          <Route path="/success" element={<Layout><OrderSuccess /></Layout>} />
+          <Route element={<Layout><Outlet /></Layout>}>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/Search" element={<Search />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/account" element={<Profile />} />
+            <Route path="/me/update" element={<UpdateProfile />} />
+            <Route path="/password/update" element={<UpdatePassword />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/Cart" element={<Cart />} />
+            <Route path="/shipping" element={<Shipping />} />
+            <Route path="/order/confirm" element={<ConfirmOrder />} />
+            <Route path="/process/payment" element={<Payment />} />
+            <Route path="/success" element={<OrderSuccess />} />
+          </Route>
           {/* <Route path="/orders" element={<MyOrders />} /> */}
 
           {/* {stripeApiKey && (
