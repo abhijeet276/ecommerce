@@ -1,11 +1,45 @@
 import React, { useState, useEffect } from 'react'
 import TextField from '../../../components/Inputs';
-import CustomButton from '../../../components/button';
+import '../login/Login.scss'
 import { useAppDispatch } from '../../../redux/hooks';
 import { userSignup } from '../../../redux/services/authService';
-import '../login/Login.scss';
+import { useForm } from '../../../hooks/useForm';
+
+interface User {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const Signup = () => {
+    const { handleSubmit, handleChange, data: user, errors } = useForm<User>({
+        validations: {
+          name: {
+            pattern: {
+              value: '^[A-Za-z]*$',
+              message:
+                "You're not allowed to use special characters or numbers in your name.",
+            },
+            custom:{
+                isValid:(value)=>value.length>9,
+                message:"it can not be shorter "
+            }
+          },
+          email: {
+           pattern:{
+            value:'/\S+@\S+\.\S+/',
+            message:"email is not valid"
+           }
+          },
+          password: {
+            custom: {
+              isValid: (value) => value.length > 6,
+              message: 'The password needs to be at least 6 characters long.',
+            },
+          },
+        },
+        onSubmit: () => alert('User submitted!'),
+      });
     const [inputDetails, setInputDetails] = useState({
         name: "",
         email: "",
@@ -48,6 +82,7 @@ const Signup = () => {
     //     }
     // }, [dispatch, error, alert, history, isAuthenticated, redirect]);
 
+console.log(errors,user,"demo")
     const registerDataChange = () => {
 
     }
@@ -55,35 +90,35 @@ const Signup = () => {
         <div className="auth-container">
             <div className="heading">Sign Up</div>
             <div className='paragraph'>Enter your detail for signup</div>
-            <form className="form" action="">
+            <form className="form" action="" onSubmit={handleSubmit}>
                 <TextField
                     type="text"
                     name="name"
                     placeholder="enter your name"
-                    required
+                    required={false}
                     label="Name"
-                    value={inputDetails.name}
-                    onChange={handleInputChange}
+                    value={user.name}
+                    onChange={handleChange("name")}
                     className='inputField'
                 />
                 <TextField
                     type="email"
                     name="email"
                     placeholder="enter your email"
-                    required
+                    required={false}
                     label="Email"
-                    value={inputDetails.email}
-                    onChange={handleInputChange}
+                    value={user.email}
+                    onChange={handleChange("email")}
                     className='inputField'
                 />
                 <TextField
                     type="password"
                     name="password"
                     placeholder="enter your password"
-                    required
+                    required={false}
                     label="Password"
-                    value={inputDetails.password}
-                    onChange={handleInputChange}
+                    value={user.password}
+                    onChange={handleChange("password")}
                     className='inputField'
                 />
                 <div className="file-input-container">
@@ -99,7 +134,7 @@ const Signup = () => {
                     />
                 </div>
                 <span className="forgot-password"><a href="#">Forgot Password ?</a></span>
-                <CustomButton type="button" disabled={false} onCLick={HandleFormSubmit} className='customButton'>Sign Up</CustomButton>
+                <button type="submit" disabled={false} className='customButton'>Sign Up</button>
             </form>
         </div>
     )
