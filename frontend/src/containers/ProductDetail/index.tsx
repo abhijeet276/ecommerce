@@ -11,6 +11,7 @@ import Reviews from "../../components/Reviews";
 import { Box } from "@mui/material";
 import { useAlert } from "react-alert";
 import { fetchAddToCart } from "../../redux/services/cartService";
+import { IAddedToCart } from "../../../types/ICart";
 type ProductParams = {
   id: string;
 };
@@ -118,4 +119,4 @@ const ProductDetail = () => {
   </>
 }
 
-export default ProductDetail
+export default ProductDetail;

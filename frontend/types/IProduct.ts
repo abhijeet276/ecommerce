@@ -48,6 +48,7 @@ export interface ProductsState {
 
 export interface userState {
   user: userList;
+  isAuthenticated: boolean;
   status: 'loading' | 'succeeded' | 'failed';
   error: any;
   isFetching: boolean;
@@ -58,4 +59,30 @@ export interface productListReq {
   page: number;
   category?: string;
   price?: [number, number];
+}
+export interface CartItem {
+  product: string;
+}
+export interface cartState {
+  cartItems: CartItem[];
+  product: string;
+  shippingInfo?: string;
+  quantity: number;
+  status: 'loading' | 'succeeded' | 'failed';
+  error: any;
+  isFetching: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+}
+
+export interface order {
+  product: string;
+}
+export interface orderState {
+  orders: order[];
+  status: 'loading' | 'succeeded' | 'failed';
+  error: any;
+  isFetching: boolean;
+  isSuccess: boolean;
+  isError: boolean;
 }

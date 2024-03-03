@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TextField from '../../../components/Inputs';
 import CustomButton from '../../../components/button';
-import '../login/Login.scss'
 import { useAppDispatch } from '../../../redux/hooks';
 import { userSignup } from '../../../redux/services/authService';
+import '../login/Login.scss';
 
 const Signup = () => {
     const [inputDetails, setInputDetails] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        avatar: ""
     });
 
     const dispatch = useAppDispatch();
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const name = e.target.name;
@@ -22,6 +24,12 @@ const Signup = () => {
     }
 
     const HandleFormSubmit = () => {
+        // const myForm = new FormData();
+
+        // myForm.set("name", inputDetails.name);
+        // myForm.set("email", inputDetails.email);
+        // myForm.set("password", inputDetails.password);
+        // myForm.set("avatar", inputDetails.avatar);
         dispatch(userSignup(inputDetails)).unwrap().then(data => (
             localStorage.setItem("token", data.token),
             console.log(data, "dataaaaaa")
@@ -30,11 +38,21 @@ const Signup = () => {
         ))
     };
 
+    // useEffect(() => {
+    //     if (error) {
+    //         alert.error(error);
+    //         dispatch(clearErrors());
+    //     }
+    //     if (isAuthenticated) {
+    //         history.push(redirect);
+    //     }
+    // }, [dispatch, error, alert, history, isAuthenticated, redirect]);
+
     const registerDataChange = () => {
 
     }
     return (
-        <div className="container">
+        <div className="auth-container">
             <div className="heading">Sign Up</div>
             <div className='paragraph'>Enter your detail for signup</div>
             <form className="form" action="">

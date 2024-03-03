@@ -2,14 +2,25 @@ import React, { Fragment } from "react";
 // import { useSelector } from "react-redux";
 import "./ConfirmOrder.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
+import { Typography, private_createTypography } from "@mui/material";
 import CheckoutSteps from "./CheckoutSteps";
 
+const cartItems = [
+    {
+        id: '1',
+        product: "fdsa",
+        image: "fdsa",
+        name: "fdsaa",
+        price: 1234,
+        quantity: 4
+    }
+];
 const ConfirmOrder = () => {
     // const { shippingInfo, cartItems } = useSelector((state) => state.cart);
     // const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
+    console.log(cartItems)
     const subtotal = cartItems.reduce(
         (acc, item) => acc + item.quantity * item.price,
         0
@@ -21,7 +32,7 @@ const ConfirmOrder = () => {
 
     const totalPrice = subtotal + tax + shippingCharges;
 
-    const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`;
+    // const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`;
 
     const proceedToPayment = () => {
         const data = {
@@ -33,7 +44,7 @@ const ConfirmOrder = () => {
 
         sessionStorage.setItem("orderInfo", JSON.stringify(data));
 
-        history.push("/process/payment");
+        navigate("/process/payment");
     };
 
     return (
@@ -46,15 +57,15 @@ const ConfirmOrder = () => {
                         <div className="confirmshippingAreaBox">
                             <div>
                                 <p>Name:</p>
-                                <span>{user.name}</span>
+                                {/* <span>{user.name}</span> */}
                             </div>
                             <div>
                                 <p>Phone:</p>
-                                <span>{shippingInfo.phoneNo}</span>
+                                {/* <span>{shippingInfo.phoneNo}</span> */}
                             </div>
                             <div>
                                 <p>Address:</p>
-                                <span>{address}</span>
+                                {/* <span>{address}</span> */}
                             </div>
                         </div>
                     </div>
@@ -62,7 +73,7 @@ const ConfirmOrder = () => {
                         <Typography>Your Cart Items:</Typography>
                         <div className="confirmCartItemsContainer">
                             {cartItems &&
-                                cartItems.map((item) => (
+                                cartItems?.map((item) => (
                                     <div key={item.product}>
                                         <img src={item.image} alt="Product" />
                                         <Link to={`/product/${item.product}`}>

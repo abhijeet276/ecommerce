@@ -23,7 +23,9 @@ const productSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(userLogin.fulfilled, (state, action) => {
+        console.log(action.payload, 'llllllllllllllllllllooooo');
         state.status = 'succeeded';
+        state.isAuthenticated = true;
         state.isFetching = false;
         state.isSuccess = true;
         state.isError = false;

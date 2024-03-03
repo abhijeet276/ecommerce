@@ -1,44 +1,53 @@
 import React, { Fragment } from "react";
-import "./Cart.scss";
-import CartItemCard from "./CartItemCard";
-import { useSelector, useDispatch } from "react-redux";
-// import { addItemsToCart, removeItemsFromCart } from "../../actions/cartAction";
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
 
-const Cart = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    // const { cartItems } = useSelector((state) => state.cart);
+import { removeItemsFromCart } from "../../redux/slices/cartSlice";
+import { fetchAddToCart } from "../../redux/services/cartService";
+import CartItemCard from "./CartItemCard";
+import "./Cart.scss";
 
-    const increaseQuantity = (id: any, quantity: any, stock: any) => {
+const Cart = () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const { cartItems } = useAppSelector((state) => state.cart);
+    console.log(cartItems, "cartItemscartItemscartItems0000")
+
+    const increaseQuantity = (id: any, quantity: number, stock: any) => {
+        // console.log(id, "idddd", quantity, "quantity", stock)
         const newQty = quantity + 1;
         if (stock <= quantity) {
             return;
         }
-        // dispatch(addItemsToCart(id, newQty));
+        dispatch(fetchAddToCart({ id, quantity: newQty }));
     };
 
-    const decreaseQuantity = (id: any, quantity: any) => {
+    const decreaseQuantity = (id: any, quantity: number) => {
         const newQty = quantity - 1;
         if (1 >= quantity) {
             return;
         }
-        // dispatch(addItemsToCart(id, newQty));
+        dispatch(fetchAddToCart({ id: id, quantity: newQty }));
     };
 
     const deleteCartItems = (id: any) => {
-        // dispatch(removeItemsFromCart(id));
+        dispatch(removeItemsFromCart(id));
     };
 
     const checkoutHandler = () => {
-        navigate("/login?redirect=shipping");
+        // navigate("/login?redirect=shipping");
+        navigate('/shipping')
     };
-    let cartItems: any = []
+    // let cartItems: any = []
+
+    console.log(cartItems, "cartItemscartItems")
 
     return (
         <Fragment>
-            {cartItems.length !== 0 ? (
+            {cartItems.length == 0 ? (
                 <div className="emptyCart">
+                    <RemoveShoppingCartIcon />
                     <div>No Product in Your Cart</div>
                     <Link to="/products">View Products</Link>
                 </div>
@@ -67,7 +76,7 @@ const Cart = () => {
                                         <button
                                             onClick={() =>
                                                 increaseQuantity(
-                                                    item.product,
+                                                    item._id,
                                                     item.quantity,
                                                     item.stock
                                                 )

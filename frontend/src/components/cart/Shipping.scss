@@ -40,16 +40,17 @@
   display: flex;
   width: 100%;
   align-items: center;
+  margin-top: 20px;
 }
 
 .shippingForm > div > input,
 .shippingForm > div > select {
-  padding: 1vmax 4vmax;
+  padding: 0.7vmax 1vmax;
   padding-right: 1vmax;
   width: 100%;
   box-sizing: border-box;
   border: 1px solid rgba(0, 0, 0, 0.267);
-  border-radius: 4px;
+  border-radius: 12px;
   font: 300 0.9vmax cursive;
   outline: none;
 }

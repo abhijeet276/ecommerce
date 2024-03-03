@@ -15,14 +15,19 @@ import ProtectedRoute from "./Layout/protectedRoute/ProtectedRoute";
 import UpdateProfile from "./containers/profile/UpdateProfile";
 import UpdatePassword from "./containers/auth/updatePassword/UpdatePassword";
 import ResetPassword from "./containers/auth/resetPassword/ResetPassword";
-import ConfirmOrder from "./components/Cart/ConfirmOrder";
-import Shipping from "./components/Cart/Shipping";
-import Payment from "./components/Cart/Payment";
-import Cart from "./components/Cart/Cart";
+import ConfirmOrder from "./components/cart/ConfirmOrder";
+import Shipping from "./components/cart/Shipping";
+import Payment from "./components/cart/Payment";
+import Cart from "./components/cart/Cart";
 // import { Elements } from "@stripe/react-stripe-js";
 // import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import Profile from "./containers/profile";
+import OrderSuccess from "./components/cart/OrderSuccess";
+import MyOrders from "./components/Order/MyOrders";
 import "./App.css"
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 const App = () => {
   const { theme, toggleTheme } = useTheme();
@@ -31,11 +36,9 @@ const App = () => {
   const [stripeApiKey, setStripeApiKey] = useState("");
 
   async function getStripeApiKey() {
-    const { data } = await axios.get("/api/v1/stripeapikey");
-    setStripeApiKey(data.stripeApiKey);
+    // const { data } = await axios.get("/api/v1/stripeapikey");
+    // setStripeApiKey(data.stripeApiKey);
   }
-
-
 
   console.log(theme)
   useEffect(() => {
@@ -49,20 +52,24 @@ const App = () => {
     <div className={`theme-${theme}`}>
       <div className="content-wrapper">
         <Routes>
-          {/* <Route path="/signup" element={<Signup />} /> */}
-          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/products" element={<Layout><Products /></Layout>} />
           <Route path="/Search" element={<Layout><Search /></Layout>} />
           <Route path="/product/:id" element={<Layout><ProductDetail /></Layout>} />
-          <Route path="/profile" element={<Layout><ProfileCard /></Layout>} />
-          <Route path="/update-profile" element={<Layout><UpdateProfile /></Layout>} />
-          <Route path="/update-password" element={<Layout><UpdatePassword /></Layout>} />
+          <Route path="/account" element={<Layout><Profile /></Layout>} />
+          <Route path="/me/update" element={<Layout><UpdateProfile /></Layout>} />
+          <Route path="/password/update" element={<Layout><UpdatePassword /></Layout>} />
           <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
           <Route path="/reset-password/:token" element={<Layout><ResetPassword /></Layout>} />
           <Route path="/Cart" element={<Layout><Cart /></Layout>} />
           <Route path="/shipping" element={<Layout><Shipping /></Layout>} />
           <Route path="/order/confirm" element={<Layout><ConfirmOrder /></Layout>} />
+          <Route path="/process/payment" element={<Layout><Payment /></Layout>} />
+          <Route path="/success" element={<Layout><OrderSuccess /></Layout>} />
+          {/* <Route path="/orders" element={<MyOrders />} /> */}
+
           {/* {stripeApiKey && (
             <Elements stripe={loadStripe(stripeApiKey)}>
               <ProtectedRoute path="/process/payment" element={<Payment />} />

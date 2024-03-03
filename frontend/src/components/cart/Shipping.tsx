@@ -1,31 +1,34 @@
 import React, { Fragment, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-// import { saveShippingInfo } from "../../actions/cartAction";
 import { Country, State } from "country-state-city";
 import { useAlert } from "react-alert";
-import CheckoutSteps from "../Cart/CheckoutSteps";
-import "./Shipping.scss";
+import CheckoutSteps from "../cart/CheckoutSteps";
 import { useNavigate } from "react-router-dom";
 import TextField from "../Inputs";
+import { saveShippingInfo } from "../../redux/slices/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import "./Shipping.scss";
 
 const Shipping = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const alert = useAlert();
-    //   const { shippingInfo } = useSelector((state) => state.cart);
+    let { shippingInfo } = useAppSelector((state: any) => state.cart)
+    // const { shippingInfo } = useSelector((state: any) => state.cart);
 
-    //   const [address, setAddress] = useState(shippingInfo.address);
-    //   const [city, setCity] = useState(shippingInfo.city);
-    //   const [state, setState] = useState(shippingInfo.state);
-    //   const [country, setCountry] = useState(shippingInfo.country);
-    //   const [pinCode, setPinCode] = useState(shippingInfo.pinCode);
-    //   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
-    const [pinCode, setPinCode] = useState('');
-    const [phoneNo, setPhoneNo] = useState('');
+    console.log(shippingInfo, "shippingInfoshippingInfo")
+
+    const [address, setAddress] = useState(shippingInfo.address);
+    const [city, setCity] = useState(shippingInfo.city);
+    const [state, setState] = useState(shippingInfo.state);
+    const [country, setCountry] = useState(shippingInfo.country);
+    const [pinCode, setPinCode] = useState(shippingInfo.pinCode);
+    const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
+    // const [address, setAddress] = useState('');
+    // const [city, setCity] = useState('');
+    // const [state, setState] = useState('');
+    // const [country, setCountry] = useState('');
+    // const [pinCode, setPinCode] = useState('');
+    // const [phoneNo, setPhoneNo] = useState('');
 
     const shippingSubmit = (e: any) => {
         e.preventDefault();
@@ -33,9 +36,9 @@ const Shipping = () => {
             alert.error("Phone Number should be 10 digits Long");
             return;
         }
-        // dispatch(
-        //   saveShippingInfo({ address, city, state, country, pinCode, phoneNo })
-        // );
+        dispatch(
+            saveShippingInfo({ address, city, state, country, pinCode, phoneNo })
+        );
         navigate("/order/confirm");
     };
 
@@ -100,10 +103,11 @@ const Shipping = () => {
                             />
                         </div>
 
-                        <div>
+                        <div className="countryField">
                             <select
                                 required
                                 value={country}
+                                className="selectCountry"
                                 onChange={(e) => setCountry(e.target.value)}
                             >
                                 <option value="">Country</option>
@@ -117,7 +121,7 @@ const Shipping = () => {
                         </div>
 
                         {country && (
-                            <div>
+                            <div className="countryField">
                                 <select
                                     required
                                     value={state}

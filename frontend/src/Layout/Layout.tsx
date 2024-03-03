@@ -1,5 +1,5 @@
-import Header from "../components/header/Header"
 import Footer from "./Footer"
+import Header from "./Header"
 export interface ILayout {
   children: React.ReactNode
 }

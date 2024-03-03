@@ -1,125 +1,129 @@
-@mixin bodySection {
-  width: 95%;
-  height: fit-content;
-  padding: 20px;
-  box-shadow: 0px 0px 14px -1px #d4cdcd;
-  margin-bottom: 25px;
-}
-@mixin sectionHeader {
-  margin-bottom: 8px;
-  border-bottom: 1px solid rgb(221, 217, 217);
+.profileContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  max-width: 100%;
+  background-color: white;
 }
 
-.profile-card {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  max-width: 60%;
-  margin: 30px auto;
+.profileContainer > div {
   display: flex;
-  justify-content: space-around;
-  .profile-left {
-    /* border: 1px solid #ccc; */
-    box-shadow: 0px 0px 20px -5px #ccc;
-    border-radius: 5px;
-    padding: 16px;
-    display: flex;
-    width: 25%;
-    flex-direction: column;
-    align-items: center;
-    background-color: #fff;
-    .profile-image {
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-    }
-    .profile-info {
-      text-align: center;
-      margin-bottom: 16px;
-      .profile-name,
-      .profile-designation {
-        border: none;
-        background-color: #f0f0f0;
-        margin: 4px 0;
-        padding: 8px;
-        width: calc(100% - 16px);
-        border-radius: 4px;
-        text-align: center;
-      }
-    }
-    .save-btn {
-      width: 100%;
-      border: none;
-      background-color: tomato;
-      color: #fff;
-      padding: 8px 16px;
-      cursor: pointer;
-      border-radius: 4px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      font-size: 12px;
-      font-family: 'Roboto';
-    }
-  }
-  .profile-body {
-    background-color: #fff;
-    margin-left: 30px;
-    width: 60%;
-    .about-section {
-      @include bodySection;
-      .section-header {
-        @include sectionHeader;
-      }
-    }
-    .ratings {
-      @include bodySection;
-      .section-header {
-        @include sectionHeader;
-      }
-    }
-    .contact-information {
-      @include bodySection;
-      .section-header {
-        @include sectionHeader;
-      }
-    }
-  }
-}
-
-.profile-header {
-  display: flex;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
 }
 
-.user-details {
-  flex-grow: 1;
-  margin-left: 10px;
+.profileContainer > div:first-child > h1 {
+  color: rgba(0, 0, 0, 0.555);
+  font: 500 2.2vmax 'Roboto';
+  transform: translateX(-10vmax) translateY(-2vmax);
 }
 
-.user-name {
-  font-size: 1.2em;
-  margin: 0;
+.profileContainer > div:first-child > img {
+  width: 20vmax;
+  border-radius: 100%;
+  transition: all 0.5s;
 }
 
-.user-designation {
-  font-size: 1em;
-  color: #666;
-  margin: 0;
+.profileContainer > div:first-child > img:hover {
+  transform: scale(1.05);
 }
 
-.save-button {
-  background-color: tomato;
-  color: white;
+.profileContainer > div:first-child > a {
   border: none;
-  padding: 5px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+  background-color: tomato;
+  font: 400 1vmax 'Roboto';
+  color: white;
+  text-decoration: none;
+  padding: 0.5vmax;
+  width: 30%;
+  margin: 4vmax;
+  text-align: center;
+  transition: all 0.5s;
 }
 
-.profile-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-bottom: 16px;
+.profileContainer > div:first-child > a:hover {
+  background-color: rgb(204, 78, 56);
+}
+
+.profileContainer > div:last-child {
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 5vmax;
+  box-sizing: border-box;
+}
+
+.profileContainer > div:last-child > div > h4 {
+  color: black;
+  font: 400 1.2vmax 'Roboto';
+}
+
+.profileContainer > div:last-child > div > p {
+  color: rgba(0, 0, 0, 0.418);
+  font: 400 1vmax cursive;
+  margin: 0.2vmax;
+}
+
+.profileContainer > div:last-child > div:last-child {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.profileContainer > div:last-child > div:last-child > a {
+  border: none;
+  background-color: rgb(68, 68, 68);
+  font: 400 1vmax 'Roboto';
+  color: white;
+  text-decoration: none;
+  padding: 0.5vmax;
+  text-align: center;
+  transition: all 0.5s;
+  margin: 1vmax 0;
+}
+
+.profileContainer > div:last-child > div:last-child > a:hover {
+  background-color: rgb(31, 31, 31);
+}
+
+@media screen and (max-width: 600px) {
+  .profileContainer {
+    flex-direction: column;
+  }
+
+  .profileContainer > div:first-child > h1 {
+    font: 500 3.2vmax 'Roboto';
+    transform: translateY(-2vmax);
+  }
+
+  .profileContainer > div:first-child > a {
+    font: 400 1.7vmax 'Roboto';
+    padding: 1vmax;
+  }
+
+  .profileContainer > div:last-child {
+    text-align: center;
+    align-items: center;
+  }
+
+  .profileContainer > div:last-child > div > h4 {
+    font: 400 2.5vmax 'Roboto';
+  }
+
+  .profileContainer > div:last-child > div > p {
+    font: 400 2vmax cursive;
+    margin: 0.5vmax 0;
+  }
+
+  .profileContainer > div:last-child > div:last-child > a {
+    font: 400 1.8vmax 'Roboto';
+    padding: 1vmax;
+    margin: 2vmax 0;
+  }
 }

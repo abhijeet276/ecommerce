@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { handlePendingAndRejected } from '../rejections';
-import { ProductList } from '../../../types/IProduct';
-import { fetchProducts, fetchSelectedProduct } from '../services/productService';
-import { productInitialState } from './state';
+import { fetchCreateOrder } from '../services/orderService';
+import { orderInitialState } from './state';
+
 type PendingAction = PayloadAction<
   undefined,
   string,
@@ -16,26 +16,25 @@ type RejectedAction = PayloadAction<
   never
 >;
 
-const productSlice = createSlice({
-  name: 'products',
-  initialState: productInitialState,
+// const initialState = {
+//   status: '',
+//   error: '',
+//   isFetching: '',
+//   isSuccess: '',
+//   isError: '',
+// };
+
+let orderSlice = createSlice({
+  name: 'order',
+  initialState: orderInitialState,
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<ProductList>) => {
-        console.log(state);
-        state.status = 'succeeded';
-        state.isFetching = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.products = action.payload;
-      })
-      .addCase(fetchSelectedProduct.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.isFetching = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.product = action.payload;
+      .addCase(fetchCreateOrder.fulfilled, (state, action) => {
+        // state.status = 'succeeded';
+        // state.isFetching = false;
+        // state.isSuccess = true;
+        // state.isError = false;
       })
       .addMatcher(
         action => action.type.endsWith('/pending') && action.type.includes('selectedProduct'),
@@ -51,4 +50,5 @@ const productSlice = createSlice({
       );
   },
 });
-export default productSlice.reducer;
+
+export default orderSlice.reducer;
